@@ -1,0 +1,781 @@
+fileFormatVersion: 2
+guid: c229a8f0f75d76e40a96444af4dfd823
+timeCreated: 1454774741
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Walls0_
+    21300002: Walls0_WES
+    21300004: Walls0_Full_WENS
+    21300006: Walls0_ES
+    21300008: Walls0_ENS
+    21300010: Walls0_WNS
+    21300012: Walls0_WEN
+    21300014: Walls0_WENS
+    21300016: Walls0_WS
+    21300018: Walls0_EN
+    21300020: Walls0_WN
+    21300022: Walls0_E
+    21300024: Walls0_W
+    21300026: Walls0_N
+    21300028: Walls0_S
+    21300030: Walls0_WE
+    21300032: Walls0_NS
+    21300034: Walls0_Full_ENS
+    21300036: Walls0_Full_WNS
+    21300038: Walls0_Full_WES
+    21300040: Walls0_Full_WEN
+    21300042: Walls0_Full_ES
+    21300044: Walls0_Full_EN
+    21300046: Walls0_Full_WS
+    21300048: Walls0_Full_WN
+    21300050: Walls0_Full_
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 2
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 32
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Walls0_
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_WES
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_WENS
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 224
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_ES
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_ENS
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_WNS
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 192
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_WEN
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_WENS
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 32
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_WS
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_EN
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_WN
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_E
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 256
+        width: 32
+        height: 31
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+        - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_W
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 256
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_N
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 224
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_S
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 224
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_WE
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 192
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_NS
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_ENS
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 224
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_WNS
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 224
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_WES
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 256
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_WEN
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 192
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_ES
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 256
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_EN
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 192
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_WS
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 256
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_WN
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 192
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    - name: Walls0_Full_
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 128
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 32}
+        - {x: 0, y: 0}
+        - {x: 32, y: 0}
+        - {x: 32, y: 32}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
