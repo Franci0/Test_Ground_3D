@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
-public class Furniture
+public class Furniture : IXmlSerializable
 {
 	public Tile tile{ get; protected set; }
 
@@ -65,7 +68,7 @@ public class Furniture
 					if (i != 0 || j != 0) {
 						t = tile.World.getTileAt (x + i, y + j);
 						//Debug.Log (t.X + " , " + t.Y);
-						if (t != null && t.furniture != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+						if (t != null && t.furniture != null && t.furniture.onChangedCallback != null && t.furniture.FurnitureType == furniture.FurnitureType) {
 							t.furniture.onChangedCallback (t.furniture);
 						}
 					}
@@ -74,6 +77,29 @@ public class Furniture
 		}
 
 		return furniture;
+	}
+
+	public Furniture ()
+	{
+
+	}
+
+	public XmlSchema GetSchema ()
+	{
+		return null;
+	}
+
+	public void WriteXml (XmlWriter writer)
+	{
+		writer.WriteAttributeString ("X", tile.X.ToString ());
+		writer.WriteAttributeString ("Y", tile.Y.ToString ());
+		writer.WriteAttributeString ("FurnitureType", FurnitureType);
+		writer.WriteAttributeString ("movementCostMultiplier", movementCostMultiplier.ToString ());
+	}
+
+	public void ReadXml (XmlReader reader)
+	{
+		movementCostMultiplier = int.Parse (reader.GetAttribute ("movementCostMultiplier"));
 	}
 
 	public void registerOnChangedCallback (Action<Furniture> callback)
@@ -110,9 +136,5 @@ public class Furniture
 	public bool isValidPosition (Tile tile)
 	{
 		return funcPositionValidation (tile);
-	}
-
-	protected Furniture ()
-	{
 	}
 }

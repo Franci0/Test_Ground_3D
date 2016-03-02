@@ -18,9 +18,9 @@ public class CharacterSpriteController : MonoBehaviour
 
 		world.registerCharacterCreatedCallback (OnCharacterCreated);
 
-		Character character = world.createCharacter (world.getTileAt (world.Width / 2, world.Height / 2));
-
-		//character.setDestination (world.getTileAt (world.Width / 2 + 5, world.Height / 2));
+		foreach (Character character in world.characters) {
+			OnCharacterCreated (character);
+		}
 	}
 
 	void loadSprites ()

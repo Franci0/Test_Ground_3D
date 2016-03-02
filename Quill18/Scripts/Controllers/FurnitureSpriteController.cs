@@ -99,6 +99,10 @@ public class FurnitureSpriteController : MonoBehaviour
 		furnitureGameObjectMap = new Dictionary<Furniture, GameObject> ();
 
 		world.registerFurnitureCreatedCallback (OnFurnitureCreated);
+
+		foreach (Furniture furniture in world.furnitures) {
+			OnFurnitureCreated (furniture);
+		}
 	}
 
 	void OnFurnitureCreated (Furniture furniture)

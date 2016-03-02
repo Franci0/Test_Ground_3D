@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
-public class Character
+public class Character : IXmlSerializable
 {
 	public float X { 
 		get { 
@@ -25,9 +28,14 @@ public class Character
 
 	Job myJob;
 
-	float speed = 2f;
+	float speed = 4f;
 
 	Action<Character> characterChangedCallback;
+
+	public Character ()
+	{
+		
+	}
 
 	public Character (Tile tile)
 	{
@@ -80,6 +88,22 @@ public class Character
 		pathAStar = null;
 		currentTile.World.jobQueue.Enqueue (myJob);
 		myJob = null;
+	}
+
+	public XmlSchema GetSchema ()
+	{
+		return null;
+	}
+
+	public void WriteXml (XmlWriter writer)
+	{
+		writer.WriteAttributeString ("X", currentTile.X.ToString ());
+		writer.WriteAttributeString ("Y", currentTile.Y.ToString ());
+	}
+
+	public void ReadXml (XmlReader reader)
+	{
+		
 	}
 
 	void update_DoJob (float deltaTime)

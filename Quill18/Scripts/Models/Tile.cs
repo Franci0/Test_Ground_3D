@@ -1,5 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 public enum TileType
 {
@@ -7,7 +10,7 @@ public enum TileType
 	Floor
 }
 
-public class Tile
+public class Tile : IXmlSerializable
 {
 
 	public TileType Type {
@@ -15,10 +18,10 @@ public class Tile
 			return type;
 		}
 		set {
+			TileType old = type;
 			type = value;
 			if (tileChangedCallback != null && old != type) {
 				tileChangedCallback (this);
-				old = type;
 			}
 		}
 	}
@@ -52,6 +55,11 @@ public class Tile
 	TileType old;
 
 	TileType type = TileType.Empty;
+
+	public Tile ()
+	{
+		
+	}
 
 	public Tile (World world, int x, int y)
 	{
@@ -130,6 +138,23 @@ public class Tile
 
 		return neighbours;
 
+	}
+
+	public XmlSchema GetSchema ()
+	{
+		return null;
+	}
+
+	public void WriteXml (XmlWriter writer)
+	{
+		writer.WriteAttributeString ("X", X.ToString ());
+		writer.WriteAttributeString ("Y", Y.ToString ());
+		writer.WriteAttributeString ("Type", ((int)Type).ToString ());
+	}
+
+	public void ReadXml (XmlReader reader)
+	{
+		Type = (TileType)int.Parse (reader.GetAttribute ("Type"));
 	}
 
 }
