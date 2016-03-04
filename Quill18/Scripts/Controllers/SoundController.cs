@@ -32,10 +32,10 @@ public class SoundController : MonoBehaviour
 			return;
 		}
 
-		AudioClip audioClip = Resources.Load<AudioClip> ("Sounds/" + furniture.FurnitureType + "_OnCreated");
+		AudioClip audioClip = Resources.Load<AudioClip> ("Sounds/" + furniture.furnitureType + "_OnCreated");
 
 		if (audioClip == null) {
-			Debug.LogError ("Sound for " + furniture.FurnitureType + " not found!");
+			Debug.LogError ("Sound for " + furniture.furnitureType + " not found!");
 			audioClip = Resources.Load<AudioClip> ("Sounds/Wall_OnCreated");
 		}
 

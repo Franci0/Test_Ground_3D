@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.Xml;
 using System.Xml.Schema;
@@ -9,56 +9,65 @@ public class Furniture : IXmlSerializable
 {
 	public Tile tile{ get; protected set; }
 
-	public string FurnitureType{ get; protected set; }
+	public string furnitureType{ get; protected set; }
 
-	public bool LinksToNeighboors{ get; protected set; }
+	public bool linksToNeighboors{ get; protected set; }
 
 	public float movementCostMultiplier{ get; protected set ; }
 
+	public Dictionary<string,object> furnitureParameters;
+	public Action<Furniture,float> updateActions;
+
 	int width;
-
 	int height;
-
 	Func<Tile, bool> funcPositionValidation;
-
 	Action<Furniture> onChangedCallback;
 
-
-	static public Furniture createPrototype (string furnitureType, float movementCostMultiplier = 1f, int width = 1, int height = 1, bool linksToNeighboors = false)
+	public Furniture ()
 	{
-		Furniture furniture = new Furniture ();
-		furniture.FurnitureType = furnitureType;
-		furniture.movementCostMultiplier = movementCostMultiplier;
-		furniture.width = width;
-		furniture.height = height;
-		furniture.LinksToNeighboors = linksToNeighboors;
-
-		furniture.funcPositionValidation = furniture.__isValidPosition;
-
-		return furniture;
+		furnitureParameters = new Dictionary<string, object> ();
 	}
 
-	static public Furniture placeInstance (Furniture prototype, Tile tile)
+	public Furniture (string _furnitureType, float _movementCostMultiplier = 1f, int _width = 1, int _height = 1, bool _linksToNeighboors = false)
+	{
+		furnitureParameters = new Dictionary<string, object> ();
+		furnitureType = _furnitureType;
+		movementCostMultiplier = _movementCostMultiplier;
+		width = _width;
+		height = _height;
+		linksToNeighboors = _linksToNeighboors;
+		funcPositionValidation = __isValidPosition;
+	}
+
+	protected Furniture (Furniture other)
+	{
+		if (other.updateActions != null) {
+			updateActions = (Action<Furniture,float>)other.updateActions.Clone ();
+		}
+
+		furnitureParameters = new Dictionary<string, object> (other.furnitureParameters);
+		furnitureType = other.furnitureType;
+		movementCostMultiplier = other.movementCostMultiplier;
+		width = other.width;
+		height = other.height;
+		linksToNeighboors = other.linksToNeighboors;
+	}
+
+	public static Furniture PlaceInstance (Furniture prototype, Tile tile)
 	{
 		if (prototype.funcPositionValidation (tile) == false) {
 			//Debug.LogError ("placeInstance -- position validity function returned false");
 			return null;
 		}
 
-		Furniture furniture = new Furniture ();
-		furniture.FurnitureType = prototype.FurnitureType;
-		furniture.movementCostMultiplier = prototype.movementCostMultiplier;
-		furniture.width = prototype.width;
-		furniture.height = prototype.height;
-		furniture.LinksToNeighboors = prototype.LinksToNeighboors;
-
+		Furniture furniture = prototype.Clone ();
 		furniture.tile = tile;
 
 		if (tile.placeFurniture (furniture) == false) {
 			return null;
 		}
 
-		if (furniture.LinksToNeighboors == true) {
+		if (furniture.linksToNeighboors == true) {
 			Tile t;
 			int x = tile.X;
 			int y = tile.Y;
@@ -68,7 +77,7 @@ public class Furniture : IXmlSerializable
 					if (i != 0 || j != 0) {
 						t = tile.World.getTileAt (x + i, y + j);
 						//Debug.Log (t.X + " , " + t.Y);
-						if (t != null && t.furniture != null && t.furniture.onChangedCallback != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+						if (t != null && t.furniture != null && t.furniture.onChangedCallback != null && t.furniture.furnitureType == furniture.furnitureType) {
 							t.furniture.onChangedCallback (t.furniture);
 						}
 					}
@@ -79,21 +88,18 @@ public class Furniture : IXmlSerializable
 		return furniture;
 	}
 
-	public Furniture ()
+	public void Update (float deltaTime)
 	{
-
-	}
-
-	public XmlSchema GetSchema ()
-	{
-		return null;
+		if (updateActions != null) {
+			updateActions (this, deltaTime);
+		}
 	}
 
 	public void WriteXml (XmlWriter writer)
 	{
 		writer.WriteAttributeString ("X", tile.X.ToString ());
 		writer.WriteAttributeString ("Y", tile.Y.ToString ());
-		writer.WriteAttributeString ("FurnitureType", FurnitureType);
+		writer.WriteAttributeString ("FurnitureType", furnitureType);
 		writer.WriteAttributeString ("movementCostMultiplier", movementCostMultiplier.ToString ());
 	}
 
@@ -110,6 +116,16 @@ public class Furniture : IXmlSerializable
 	public void unregisterOnChangedCallback (Action<Furniture> callback)
 	{
 		onChangedCallback -= callback;
+	}
+
+	public virtual Furniture Clone ()
+	{
+		return new Furniture (this);
+	}
+
+	public XmlSchema GetSchema ()
+	{
+		return null;
 	}
 
 	public bool __isValidPosition (Tile tile)

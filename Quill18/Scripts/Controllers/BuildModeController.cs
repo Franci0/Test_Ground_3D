@@ -37,7 +37,7 @@ public class BuildModeController : MonoBehaviour
 			string furnitureType = buildModeObjectType;
 
 			if (devActive == true) {
-				WorldController.Instance.world.placeFurniture (furnitureType, tile);
+				WorldController.Instance.world.PlaceFurniture (furnitureType, tile);
 				return;
 			}
 
@@ -51,7 +51,7 @@ public class BuildModeController : MonoBehaviour
 			if (tile.pendingFurnitureJob == null && WorldController.Instance.world.isFurniturePlacementValid (furnitureType, tile) == true) {
 
 				Job job = new Job (tile, (theJob) => {	
-					WorldController.Instance.world.placeFurniture (furnitureType, theJob.Tile);
+					WorldController.Instance.world.PlaceFurniture (furnitureType, theJob.Tile);
 					tile.pendingFurnitureJob = null;
 				}, furnitureType);
 

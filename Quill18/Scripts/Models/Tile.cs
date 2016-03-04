@@ -18,7 +18,7 @@ public class Tile : IXmlSerializable
 			return type;
 		}
 		set {
-			TileType old = type;
+			old = type;
 			type = value;
 			if (tileChangedCallback != null && old != type) {
 				tileChangedCallback (this);

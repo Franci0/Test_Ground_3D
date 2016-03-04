@@ -15,11 +15,11 @@ public class FurnitureSpriteController : MonoBehaviour
 	public Sprite getSpriteForFurniture (Furniture furniture)
 	{
 		//Debug.Log ("getSpriteForFurniture");
-		if (furniture.LinksToNeighboors == false) {
-			return furnitureSprites [furniture.FurnitureType];
+		if (furniture.linksToNeighboors == false) {
+			return furnitureSprites [furniture.furnitureType];
 		}
 
-		string spriteName = furniture.FurnitureType + "s0_";
+		string spriteName = furniture.furnitureType + "s0_";
 
 		int x = furniture.tile.X;
 		int y = furniture.tile.Y;
@@ -31,12 +31,12 @@ public class FurnitureSpriteController : MonoBehaviour
 		for (int i = -1; i <= 1; i = i + 2) {
 			for (int j = -1; j <= 1; j = j + 2) {
 				t = world.getTileAt (x + i, y + j);
-				if (t != null && t.furniture != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+				if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 
 					t = world.getTileAt (x + i, y);
-					if (t != null && t.furniture != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+					if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 						t = world.getTileAt (x, y + j);
-						if (t != null && t.furniture != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+						if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 							spriteName += "Full_";
 							exit = true;
 							break;
@@ -50,19 +50,19 @@ public class FurnitureSpriteController : MonoBehaviour
 		}
 
 		t = world.getTileAt (x - 1, y);
-		if (t != null && t.furniture != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+		if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 			spriteName += "W";
 		}
 		t = world.getTileAt (x + 1, y);
-		if (t != null && t.furniture != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+		if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 			spriteName += "E";
 		}
 		t = world.getTileAt (x, y + 1);
-		if (t != null && t.furniture != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+		if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 			spriteName += "N";
 		}
 		t = world.getTileAt (x, y - 1);
-		if (t != null && t.furniture != null && t.furniture.FurnitureType == furniture.FurnitureType) {
+		if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 			spriteName += "S";
 		}
 
@@ -113,7 +113,7 @@ public class FurnitureSpriteController : MonoBehaviour
 
 		furnitureGameObjectMap.Add (furniture, furniture_go);
 
-		furniture_go.name = furniture.FurnitureType + "_" + furniture.tile.X + "_" + furniture.tile.Y;
+		furniture_go.name = furniture.furnitureType + "_" + furniture.tile.X + "_" + furniture.tile.Y;
 		furniture_go.transform.position = new Vector3 (furniture.tile.X, furniture.tile.Y, 0);
 		furniture_go.transform.SetParent (this.transform, true);
 

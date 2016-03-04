@@ -115,7 +115,7 @@ public class World : IXmlSerializable
 		return tiles [x, y];
 	}
 
-	public Furniture placeFurniture (string furnitureType, Tile tile)
+	public Furniture PlaceFurniture (string furnitureType, Tile tile)
 	{
 		//1x1 tile
 		if (!furniturePrototypes.ContainsKey (furnitureType)) {
@@ -123,7 +123,7 @@ public class World : IXmlSerializable
 			return null;
 		}
 		//Debug.Log (furnitureType);
-		Furniture furniture = Furniture.placeInstance (furniturePrototypes [furnitureType], tile);
+		Furniture furniture = Furniture.PlaceInstance (furniturePrototypes [furnitureType], tile);
 
 		if (furniture == null) {
 			return null;
@@ -218,23 +218,14 @@ public class World : IXmlSerializable
 		invalidateTileGraph ();
 	}
 
-	void instantiateFurniturePrototypes ()
+	void InstantiateFurniturePrototypes ()
 	{
 		furniturePrototypes = new Dictionary<string, Furniture> ();
-		Furniture prototype = instantiateFurniture ("Wall");//stringa temporanea, da cambiare (probabilmente da file)
-		if (prototype != null) {
-			furniturePrototypes.Add ("Wall", prototype);
-		}
-	}
+		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true));
+		furniturePrototypes.Add ("Door", new Furniture ("Door", 0, 1, 1, true));
 
-	Furniture instantiateFurniture (string name)
-	{
-		if (name.Equals ("Wall")) {
-			return Furniture.createPrototype ("Wall", 0, 1, 1, true);
-		} else {
-			Debug.LogError ("Prototype not found");
-			return null;
-		}
+		furniturePrototypes ["Door"].furnitureParameters ["openness"] = 0;
+		furniturePrototypes ["Door"].updateActions += FurnitureActions.Door_UpdateAction;
 	}
 
 	void SetupWorld (int width, int height)
@@ -252,7 +243,7 @@ public class World : IXmlSerializable
 			}
 		}
 
-		instantiateFurniturePrototypes ();
+		InstantiateFurniturePrototypes ();
 
 		characters = new List<Character> ();
 		furnitures = new List<Furniture> ();
@@ -283,7 +274,7 @@ public class World : IXmlSerializable
 			int x = int.Parse (reader.GetAttribute ("X"));
 			int y = int.Parse (reader.GetAttribute ("Y"));
 
-			Furniture furniture = placeFurniture (reader.GetAttribute ("FurnitureType"), tiles [x, y]);
+			Furniture furniture = PlaceFurniture (reader.GetAttribute ("FurnitureType"), tiles [x, y]);
 			furniture.ReadXml (reader);
 		}
 	}
