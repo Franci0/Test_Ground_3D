@@ -15,7 +15,7 @@ public class Furniture : IXmlSerializable
 
 	public float movementCostMultiplier{ get; protected set ; }
 
-	public Dictionary<string,object> furnitureParameters;
+	public Dictionary<string,float> furnitureParameters;
 	public Action<Furniture,float> updateActions;
 
 	int width;
@@ -25,12 +25,12 @@ public class Furniture : IXmlSerializable
 
 	public Furniture ()
 	{
-		furnitureParameters = new Dictionary<string, object> ();
+		furnitureParameters = new Dictionary<string, float> ();
 	}
 
 	public Furniture (string _furnitureType, float _movementCostMultiplier = 1f, int _width = 1, int _height = 1, bool _linksToNeighboors = false)
 	{
-		furnitureParameters = new Dictionary<string, object> ();
+		furnitureParameters = new Dictionary<string, float> ();
 		furnitureType = _furnitureType;
 		movementCostMultiplier = _movementCostMultiplier;
 		width = _width;
@@ -45,7 +45,7 @@ public class Furniture : IXmlSerializable
 			updateActions = (Action<Furniture,float>)other.updateActions.Clone ();
 		}
 
-		furnitureParameters = new Dictionary<string, object> (other.furnitureParameters);
+		furnitureParameters = new Dictionary<string, float> (other.furnitureParameters);
 		furnitureType = other.furnitureType;
 		movementCostMultiplier = other.movementCostMultiplier;
 		width = other.width;
@@ -100,12 +100,27 @@ public class Furniture : IXmlSerializable
 		writer.WriteAttributeString ("X", tile.X.ToString ());
 		writer.WriteAttributeString ("Y", tile.Y.ToString ());
 		writer.WriteAttributeString ("FurnitureType", furnitureType);
-		writer.WriteAttributeString ("movementCostMultiplier", movementCostMultiplier.ToString ());
+		//writer.WriteAttributeString ("movementCostMultiplier", movementCostMultiplier.ToString ());
+
+		foreach (string key in furnitureParameters.Keys) {
+			writer.WriteStartElement ("Param");
+			writer.WriteAttributeString ("name", key);
+			writer.WriteAttributeString ("value", furnitureParameters [key].ToString ());
+			writer.WriteEndElement ();
+		}
 	}
 
 	public void ReadXml (XmlReader reader)
 	{
-		movementCostMultiplier = int.Parse (reader.GetAttribute ("movementCostMultiplier"));
+		//movementCostMultiplier = int.Parse (reader.GetAttribute ("movementCostMultiplier"));
+
+		if (reader.ReadToDescendant ("Param")) {
+			do {
+				string key = reader.GetAttribute ("name");
+				float value = float.Parse (reader.GetAttribute ("value"));
+				furnitureParameters [key] = value;
+			} while(reader.ReadToNextSibling ("Param"));
+		}
 	}
 
 	public void registerOnChangedCallback (Action<Furniture> callback)

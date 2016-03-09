@@ -42,7 +42,7 @@ public class Character : IXmlSerializable
 		currentTile = destinationTile = nextTile = tile;
 	}
 
-	public void update (float deltaTime)
+	public void Update (float deltaTime)
 	{
 		update_DoJob (deltaTime);
 		update_DoMovement (deltaTime);
@@ -143,6 +143,9 @@ public class Character : IXmlSerializable
 					pathAStar = null;
 					return;
 				}
+
+				pathAStar.Dequeue ();
+
 			}
 
 			nextTile = pathAStar.Dequeue ();
@@ -154,7 +157,15 @@ public class Character : IXmlSerializable
 		//Debug.Log ("CurrentTile: " + currentTile.X + " , " + currentTile.Y + "\n" + "NextTile: " + nextTile.X + " , " + nextTile.Y);
 
 		float distanceToTravel = Mathf.Sqrt (Mathf.Pow (currentTile.X - nextTile.X, 2) + Mathf.Pow (currentTile.Y - nextTile.Y, 2));
-		float distanceThisFrame = speed * deltaTime;
+
+		if (nextTile.movementCost == 0) {
+			Debug.LogError ("Charcter tried to enter in unwalkable tile");
+			nextTile = null;
+			pathAStar = null;
+			return;
+		}
+
+		float distanceThisFrame = speed / nextTile.movementCost * deltaTime;
 		float percentageThisFrame = distanceThisFrame / distanceToTravel;
 		movementPercentage += percentageThisFrame;
 

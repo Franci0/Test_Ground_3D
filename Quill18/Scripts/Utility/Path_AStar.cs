@@ -113,8 +113,10 @@ public class Path_AStar
 		while (cameFrom.ContainsKey (current) == true) {
 			current = cameFrom [current];
 			path.Push (current.data);
-			Debug.Log ("Path data: " + current.data.X + " , " + current.data.Y);
+			//Debug.Log ("Path data: " + current.data.X + " , " + current.data.Y);
 		}
+
+		//path.Pop ();
 	}
 
 	float distanceBetween (Path_Node<Tile> a, Path_Node<Tile> b)

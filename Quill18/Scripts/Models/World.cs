@@ -199,7 +199,11 @@ public class World : IXmlSerializable
 	public void update (float deltaTime)
 	{
 		foreach (Character character in characters) {
-			character.update (deltaTime);
+			character.Update (deltaTime);
+		}
+
+		foreach (Furniture furniture in furnitures) {
+			furniture.Update (deltaTime);
 		}
 	}
 
@@ -222,7 +226,7 @@ public class World : IXmlSerializable
 	{
 		furniturePrototypes = new Dictionary<string, Furniture> ();
 		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true));
-		furniturePrototypes.Add ("Door", new Furniture ("Door", 0, 1, 1, true));
+		furniturePrototypes.Add ("Door", new Furniture ("Door", 1, 1, 1, false));
 
 		furniturePrototypes ["Door"].furnitureParameters ["openness"] = 0;
 		furniturePrototypes ["Door"].updateActions += FurnitureActions.Door_UpdateAction;
@@ -251,47 +255,36 @@ public class World : IXmlSerializable
 
 	void ReadXml_Tiles (XmlReader reader)
 	{
-		while (reader.Read ()) {
-			
-			if (reader.Name != "Tile") {
-				return;
-			}
-
-			int x = int.Parse (reader.GetAttribute ("X"));
-			int y = int.Parse (reader.GetAttribute ("Y"));
-			tiles [x, y].ReadXml (reader);
+		if (reader.ReadToDescendant ("Tile")) {
+			do {
+				int x = int.Parse (reader.GetAttribute ("X"));
+				int y = int.Parse (reader.GetAttribute ("Y"));
+				tiles [x, y].ReadXml (reader);
+			} while(reader.ReadToNextSibling ("Tile"));
 		}
 	}
 
 	void ReadXml_Furnitures (XmlReader reader)
 	{
-		while (reader.Read ()) {
-
-			if (reader.Name != "Furniture") {
-				return;
-			}
-
-			int x = int.Parse (reader.GetAttribute ("X"));
-			int y = int.Parse (reader.GetAttribute ("Y"));
-
-			Furniture furniture = PlaceFurniture (reader.GetAttribute ("FurnitureType"), tiles [x, y]);
-			furniture.ReadXml (reader);
+		if (reader.ReadToDescendant ("Furniture")) {
+			do {
+				int x = int.Parse (reader.GetAttribute ("X"));
+				int y = int.Parse (reader.GetAttribute ("Y"));
+				Furniture furniture = PlaceFurniture (reader.GetAttribute ("FurnitureType"), tiles [x, y]);
+				furniture.ReadXml (reader);
+			} while(reader.ReadToNextSibling ("Furniture"));
 		}
 	}
 
 	void ReadXml_Characters (XmlReader reader)
 	{
-		while (reader.Read ()) {
-
-			if (reader.Name != "Character") {
-				return;
-			}
-
-			int x = int.Parse (reader.GetAttribute ("X"));
-			int y = int.Parse (reader.GetAttribute ("Y"));
-
-			Character character = CreateCharacter (tiles [x, y]);
-			character.ReadXml (reader);
+		if (reader.ReadToDescendant ("Character")) {
+			do {
+				int x = int.Parse (reader.GetAttribute ("X"));
+				int y = int.Parse (reader.GetAttribute ("Y"));
+				Character character = CreateCharacter (tiles [x, y]);
+				character.ReadXml (reader);
+			} while(reader.ReadToNextSibling ("Character"));
 		}
 	}
 }

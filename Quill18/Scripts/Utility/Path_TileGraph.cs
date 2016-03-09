@@ -22,7 +22,7 @@ public class Path_TileGraph
 			}
 		}
 
-		Debug.Log ("Path_TileGraph -- Created " + nodes.Count + " nodes");
+		//Debug.Log ("Path_TileGraph -- Created " + nodes.Count + " nodes");
 		int edgesCount = 0;
 
 		foreach (Tile tile in nodes.Keys) {
@@ -46,7 +46,7 @@ public class Path_TileGraph
 			node.egdes = edges.ToArray ();
 		}
 
-		Debug.Log ("Path_TileGraph -- Created " + edgesCount + " edges");
+		//Debug.Log ("Path_TileGraph -- Created " + edgesCount + " edges");
 	}
 
 	bool isClippingCorner (Tile current, Tile neighbour)

@@ -5,6 +5,6 @@ public static class FurnitureActions
 {
 	public static void Door_UpdateAction (Furniture furniture, float deltaTime)
 	{
-		Debug.Log ("Door_UpdateAction");
+		//Debug.Log ("Door_UpdateAction");
 	}
 }

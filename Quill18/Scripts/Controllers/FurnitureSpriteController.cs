@@ -153,11 +153,20 @@ public class FurnitureSpriteController : MonoBehaviour
 	{
 		furnitureSprites = new Dictionary<string, Sprite> ();
 
-		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/Wall");
+		Sprite[] wallSprites = Resources.LoadAll<Sprite> ("Sprites/Wall");
 
-		foreach (Sprite s in sprites) {
+		foreach (Sprite s in wallSprites) {
 			furnitureSprites [s.name] = s;
 		}
+
+		Sprite[] doorSprites = Resources.LoadAll<Sprite> ("Sprites/Door");
+
+		foreach (Sprite s in doorSprites) {
+			furnitureSprites [s.name] = s;
+			Debug.Log (s.name);
+		}
+
+
 	}
 
 }
