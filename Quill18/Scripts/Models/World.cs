@@ -47,9 +47,11 @@ public class World : IXmlSerializable
 		writer.WriteStartElement ("Tiles");
 		for (int x = 0; x < Width; x++) {
 			for (int y = 0; y < Height; y++) {
-				writer.WriteStartElement ("Tile");
-				tiles [x, y].WriteXml (writer);
-				writer.WriteEndElement ();
+				if (tiles [x, y].Type != TileType.Empty) {
+					writer.WriteStartElement ("Tile");
+					tiles [x, y].WriteXml (writer);
+					writer.WriteEndElement ();
+				}
 			}
 		}
 		writer.WriteFullEndElement ();
@@ -227,7 +229,6 @@ public class World : IXmlSerializable
 		furniturePrototypes = new Dictionary<string, Furniture> ();
 		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true));
 		furniturePrototypes.Add ("Door", new Furniture ("Door", 1, 1, 1, false));
-
 		furniturePrototypes ["Door"].furnitureParameters ["openness"] = 0;
 		furniturePrototypes ["Door"].updateActions += FurnitureActions.Door_UpdateAction;
 	}
