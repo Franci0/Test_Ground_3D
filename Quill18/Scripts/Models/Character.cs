@@ -118,11 +118,11 @@ public class Character : IXmlSerializable
 			}
 		}
 
-		if (currentTile == destinationTile) {
+		if (myJob != null && currentTile == myJob.Tile) {
 			//if (pathAStar != null && pathAStar.count () == 1) {
-			if (myJob != null) {
-				myJob.doWork (deltaTime);
-			}
+			//if (myJob != null) {
+			myJob.doWork (deltaTime);
+			//}
 		}
 	}
 
@@ -158,10 +158,12 @@ public class Character : IXmlSerializable
 
 		float distanceToTravel = Mathf.Sqrt (Mathf.Pow (currentTile.X - nextTile.X, 2) + Mathf.Pow (currentTile.Y - nextTile.Y, 2));
 
-		if (nextTile.movementCost == 0) {
+		if (nextTile.isAccessible () == Accessiblity.Never) {
 			Debug.LogError ("Charcter tried to enter in unwalkable tile");
 			nextTile = null;
 			pathAStar = null;
+			return;
+		} else if (nextTile.isAccessible () == Accessiblity.Soon) {
 			return;
 		}
 

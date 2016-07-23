@@ -17,6 +17,7 @@ public class Furniture : IXmlSerializable
 
 	public Dictionary<string,float> furnitureParameters;
 	public Action<Furniture,float> updateActions;
+	public Func<Furniture,Accessiblity> isAccessible;
 
 	int width;
 	int height;
@@ -51,6 +52,7 @@ public class Furniture : IXmlSerializable
 		width = other.width;
 		height = other.height;
 		linksToNeighboors = other.linksToNeighboors;
+		isAccessible = other.isAccessible;
 	}
 
 	public static Furniture PlaceInstance (Furniture prototype, Tile tile)

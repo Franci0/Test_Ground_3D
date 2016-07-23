@@ -10,6 +10,13 @@ public enum TileType
 	Floor
 }
 
+public enum Accessiblity
+{
+	Yes,
+	Never,
+	Soon
+}
+
 public class Tile : IXmlSerializable
 {
 
@@ -155,6 +162,18 @@ public class Tile : IXmlSerializable
 	public void ReadXml (XmlReader reader)
 	{
 		Type = (TileType)int.Parse (reader.GetAttribute ("Type"));
+	}
+
+	public Accessiblity isAccessible ()
+	{
+		if (movementCost == 0) {
+			return Accessiblity.Never;
+		}
+		if (furniture != null && furniture.isAccessible != null) {
+			return furniture.isAccessible (furniture);
+		}
+
+		return Accessiblity.Yes;
 	}
 
 }
