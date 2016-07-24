@@ -48,7 +48,7 @@ public class BuildModeController : MonoBehaviour
 				}
 			}*/
 
-			if (tile.pendingFurnitureJob == null && WorldController.Instance.world.isFurniturePlacementValid (furnitureType, tile) == true) {
+			if (tile.pendingFurnitureJob == null && WorldController.Instance.world.isFurniturePlacementValid (furnitureType, tile)) {
 
 				Job job = new Job (tile, (theJob) => {	
 					WorldController.Instance.world.PlaceFurniture (furnitureType, theJob.Tile);

@@ -60,6 +60,9 @@ public class Room
 			}
 		}
 
+		newRoom.atmosCO2 = oldRoom.atmosCO2;
+		newRoom.atmosN = oldRoom.atmosN;
+		newRoom.atmosO2 = oldRoom.atmosO2;
 		tile.World.AddRoom (newRoom);
 	}
 

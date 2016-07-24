@@ -21,11 +21,11 @@ public class FurnitureSpriteController : MonoBehaviour
 		if (furniture.linksToNeighboors == false) {
 
 			if (furniture.furnitureType == "Door") {
-				if (furniture.furnitureParameters [World.openness] < 0.1f) {
+				if (furniture.GetParameter (World.openness) < 0.1f) {
 					spriteName = "Door";
-				} else if (furniture.furnitureParameters [World.openness] < 0.5f) {
+				} else if (furniture.GetParameter (World.openness) < 0.5f) {
 					spriteName = "Door_openness_1";
-				} else if (furniture.furnitureParameters [World.openness] < 0.9f) {
+				} else if (furniture.GetParameter (World.openness) < 0.9f) {
 					spriteName = "Door_openness_2";
 				} else {
 					spriteName = "Door_openness_3";

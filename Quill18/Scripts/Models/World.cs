@@ -35,7 +35,7 @@ public class World : IXmlSerializable
 	public World (int width, int height)
 	{
 		SetupWorld (width, height);
-		Character character = CreateCharacter (getTileAt (width / 2, height / 2));
+		CreateCharacter (getTileAt (width / 2, height / 2));
 	}
 
 	public XmlSchema GetSchema ()
@@ -174,7 +174,7 @@ public class World : IXmlSerializable
 
 	public bool isFurniturePlacementValid (string furnitureType, Tile tile)
 	{
-		return furniturePrototypes [furnitureType].__isValidPosition (tile);
+		return furniturePrototypes [furnitureType].DEFAULT__isValidPosition (tile);
 	}
 
 	public Furniture getFurniturePrototype (String objectType)
@@ -261,9 +261,9 @@ public class World : IXmlSerializable
 		furniturePrototypes = new Dictionary<string, Furniture> ();
 		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true, true));
 		furniturePrototypes.Add ("Door", new Furniture ("Door", 1.1f, 1, 1, false, true));
-		furniturePrototypes ["Door"].furnitureParameters [openness] = 0;
-		furniturePrototypes ["Door"].furnitureParameters [is_opening] = 0;
-		furniturePrototypes ["Door"].updateActions += FurnitureActions.Door_UpdateAction;
+		furniturePrototypes ["Door"].SetParameter (openness, 0);
+		furniturePrototypes ["Door"].SetParameter (is_opening, 0);
+		furniturePrototypes ["Door"].RegisterUpdateAction (FurnitureActions.Door_UpdateAction);
 		furniturePrototypes ["Door"].isAccessible = FurnitureActions.Door_IsAccessible;
 	}
 

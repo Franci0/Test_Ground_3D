@@ -17,10 +17,11 @@ public class Furniture : IXmlSerializable
 
 	public bool roomEnclosure{ get; protected set ; }
 
-	public Dictionary<string,float> furnitureParameters;
-	public Action<Furniture,float> updateActions;
 	public Func<Furniture,Accessiblity> isAccessible;
 	public Action<Furniture> onChangedCallback;
+
+	protected Dictionary<string,float> furnitureParameters;
+	protected Action<Furniture,float> updateActions;
 
 	int width;
 	int height;
@@ -40,7 +41,7 @@ public class Furniture : IXmlSerializable
 		width = _width;
 		height = _height;
 		linksToNeighboors = _linksToNeighboors;
-		funcPositionValidation = __isValidPosition;
+		funcPositionValidation = DEFAULT__isValidPosition;
 	}
 
 	protected Furniture (Furniture other)
@@ -149,7 +150,7 @@ public class Furniture : IXmlSerializable
 		return null;
 	}
 
-	public bool __isValidPosition (Tile tile)
+	public bool DEFAULT__isValidPosition (Tile tile)
 	{
 		if (tile.Type != TileType.Floor) {
 			return false;
@@ -162,16 +163,40 @@ public class Furniture : IXmlSerializable
 		return true;
 	}
 
-	public bool __isValidPosition_Door (Tile tile)
-	{
-		if (__isValidPosition (tile) == false) {
-			return false;
-		}
-		return true;
-	}
-
 	public bool isValidPosition (Tile tile)
 	{
 		return funcPositionValidation (tile);
+	}
+
+	public float GetParameter (String key, float default_value = 0)
+	{
+		if (!furnitureParameters.ContainsKey (key)) {
+			return default_value;
+		}
+
+		return furnitureParameters [key];
+	}
+
+	public void SetParameter (String key, float value)
+	{
+		furnitureParameters.Add (key, value);
+	}
+
+	public void ChangeParameter (String key, float value)
+	{
+		if (!furnitureParameters.ContainsKey (key)) {
+			furnitureParameters [key] = value;
+		}
+		furnitureParameters [key] += value;
+	}
+
+	public void RegisterUpdateAction (Action<Furniture,float> action)
+	{
+		updateActions += action;
+	}
+
+	public void UnregisterUpdateAction (Action<Furniture,float> action)
+	{
+		updateActions -= action;
 	}
 }
