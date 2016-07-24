@@ -15,6 +15,8 @@ public class Furniture : IXmlSerializable
 
 	public float movementCostMultiplier{ get; protected set ; }
 
+	public bool roomEnclosure{ get; protected set ; }
+
 	public Dictionary<string,float> furnitureParameters;
 	public Action<Furniture,float> updateActions;
 	public Func<Furniture,Accessiblity> isAccessible;
@@ -29,11 +31,12 @@ public class Furniture : IXmlSerializable
 		furnitureParameters = new Dictionary<string, float> ();
 	}
 
-	public Furniture (string _furnitureType, float _movementCostMultiplier = 1f, int _width = 1, int _height = 1, bool _linksToNeighboors = false)
+	public Furniture (string _furnitureType, float _movementCostMultiplier = 1f, int _width = 1, int _height = 1, bool _linksToNeighboors = false, bool _roomEnclosure = false)
 	{
 		furnitureParameters = new Dictionary<string, float> ();
 		furnitureType = _furnitureType;
 		movementCostMultiplier = _movementCostMultiplier;
+		roomEnclosure = _roomEnclosure;
 		width = _width;
 		height = _height;
 		linksToNeighboors = _linksToNeighboors;
@@ -49,6 +52,7 @@ public class Furniture : IXmlSerializable
 		furnitureParameters = new Dictionary<string, float> (other.furnitureParameters);
 		furnitureType = other.furnitureType;
 		movementCostMultiplier = other.movementCostMultiplier;
+		roomEnclosure = other.roomEnclosure;
 		width = other.width;
 		height = other.height;
 		linksToNeighboors = other.linksToNeighboors;

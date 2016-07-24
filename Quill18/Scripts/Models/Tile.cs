@@ -34,8 +34,6 @@ public class Tile : IXmlSerializable
 		}
 	}
 
-	public Inventory inventory{ get; protected set; }
-
 	public Furniture furniture{ get; protected set; }
 
 	public int X{ get; protected set; }
@@ -57,10 +55,12 @@ public class Tile : IXmlSerializable
 	}
 
 	public Job pendingFurnitureJob;
+	public Room room;
 
 	Action<Tile> tileChangedCallback;
 	TileType old;
 	TileType type = TileType.Empty;
+	Inventory inventory;
 
 	public Tile ()
 	{

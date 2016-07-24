@@ -17,8 +17,9 @@ public class World : IXmlSerializable
 
 	public JobQueue jobQueue;
 	public List<Furniture> furnitures;
-	public Path_TileGraph tileGraph;
 	public List<Character> characters;
+	public List<Room> rooms;
+	public Path_TileGraph tileGraph;
 
 	Tile[,] tiles;
 	Dictionary<string,Furniture> furniturePrototypes;
@@ -136,9 +137,16 @@ public class World : IXmlSerializable
 
 		furnitures.Add (furniture);
 
+		if (furniture.roomEnclosure) {
+			Room.DoRoomFloodFill (furniture);
+		}
+
 		if (furnitureCreatedCallback != null) {
 			furnitureCreatedCallback (furniture);
-			invalidateTileGraph ();
+
+			if (furniture.movementCostMultiplier != 1) {
+				invalidateTileGraph ();
+			}
 		}
 
 		return furniture;
@@ -217,6 +225,21 @@ public class World : IXmlSerializable
 		tileGraph = null;
 	}
 
+	public Room GetOutsideRoom ()
+	{
+		return rooms [0];
+	}
+
+	public void DeleteRoom (Room room)
+	{
+		if (room == GetOutsideRoom ()) {
+			Debug.LogError ("Tried to delete OutsideRoom");
+			return;
+		}
+		room.UnAssignAllTiles ();
+		rooms.Remove (room);
+	}
+
 	void onTileChanged (Tile tile)
 	{
 		if (tileChangedCallback == null) {
@@ -230,8 +253,8 @@ public class World : IXmlSerializable
 	void InstantiateFurniturePrototypes ()
 	{
 		furniturePrototypes = new Dictionary<string, Furniture> ();
-		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true));
-		furniturePrototypes.Add ("Door", new Furniture ("Door", 1, 1, 1, false));
+		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true, true));
+		furniturePrototypes.Add ("Door", new Furniture ("Door", 1.1f, 1, 1, false, true));
 		furniturePrototypes ["Door"].furnitureParameters [openness] = 0;
 		furniturePrototypes ["Door"].furnitureParameters [is_opening] = 0;
 		furniturePrototypes ["Door"].updateActions += FurnitureActions.Door_UpdateAction;
@@ -246,10 +269,14 @@ public class World : IXmlSerializable
 		Height = height;
 		tiles = new Tile[width, height];
 
+		rooms = new List<Room> ();
+		rooms.Add (new Room ());
+
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				tiles [x, y] = new Tile (this, x, y);
 				tiles [x, y].registerTileChangedCallback (onTileChanged);
+				tiles [x, y].room = GetOutsideRoom ();
 			}
 		}
 
