@@ -12,11 +12,55 @@ public class Room
 	public static void DoRoomFloodFill (Furniture sourceFurniture)
 	{
 		World world = sourceFurniture.tile.World;
-		Room room = sourceFurniture.tile.room;
+		Room oldRoom = sourceFurniture.tile.room;
 
-		if (room != world.GetOutsideRoom ()) {
-			world.DeleteRoom (room);
+		foreach (var tile in sourceFurniture.tile.getNeighboors()) {
+			ActualFlooFill (tile, oldRoom);
 		}
+
+		sourceFurniture.tile.room = null;
+		oldRoom.tiles.Remove (sourceFurniture.tile);
+
+		if (oldRoom != world.GetOutsideRoom ()) {
+			if (oldRoom.tiles.Count > 0) {
+				Debug.LogError ("oldRoom still has tiles assigned to it");
+			}
+			world.DeleteRoom (oldRoom);
+		}
+	}
+
+	protected static void ActualFlooFill (Tile tile, Room oldRoom)
+	{
+		if (tile == null || tile.room != oldRoom || (tile.furniture != null && tile.furniture.roomEnclosure) || tile.Type == TileType.Empty) {
+			return;
+		}
+
+		Room newRoom = new Room ();
+		Queue<Tile> tilesToCheck = new Queue<Tile> ();
+		tilesToCheck.Enqueue (tile);
+
+		while (tilesToCheck.Count > 0) {
+			Tile t = tilesToCheck.Dequeue ();
+
+			if (t.room == oldRoom) {
+				newRoom.AssignTile (t);
+
+				Tile[] ns = t.getNeighboors ();
+
+				foreach (var t2 in ns) {
+					if (t2 == null || t2.Type == TileType.Empty) {
+						newRoom.UnAssignAllTiles ();
+						return;
+					}
+
+					if (t2 != null && t2.room == oldRoom && (t2.furniture == null || !t2.furniture.roomEnclosure)) {
+						tilesToCheck.Enqueue (t2);
+					}
+				}
+			}
+		}
+
+		tile.World.AddRoom (newRoom);
 	}
 
 	public Room ()
@@ -28,6 +72,10 @@ public class Room
 	{
 		if (tiles.Contains (tile)) {
 			return;
+		}
+
+		if (tile.room != null) {
+			tile.room.tiles.Remove (tile);
 		}
 
 		tile.room = this;

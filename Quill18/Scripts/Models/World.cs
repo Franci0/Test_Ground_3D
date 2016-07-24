@@ -236,8 +236,14 @@ public class World : IXmlSerializable
 			Debug.LogError ("Tried to delete OutsideRoom");
 			return;
 		}
-		room.UnAssignAllTiles ();
+
 		rooms.Remove (room);
+		room.UnAssignAllTiles ();
+	}
+
+	public void AddRoom (Room room)
+	{
+		rooms.Add (room);
 	}
 
 	void onTileChanged (Tile tile)

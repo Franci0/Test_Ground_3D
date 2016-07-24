@@ -175,4 +175,24 @@ public class Tile : IXmlSerializable
 		return Accessiblity.Yes;
 	}
 
+	public Tile North ()
+	{
+		return World.getTileAt (X, Y + 1);
+	}
+
+	public Tile South ()
+	{
+		return World.getTileAt (X, Y - 1);
+	}
+
+	public Tile West ()
+	{
+		return World.getTileAt (X - 1, Y);
+	}
+
+	public Tile East ()
+	{
+		return World.getTileAt (X + 1, Y);
+	}
+
 }
