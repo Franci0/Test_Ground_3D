@@ -30,6 +30,16 @@ public class MouseController : MonoBehaviour
 
 	List<GameObject> dragCursors;
 
+	public Vector3 GetMousePosition ()
+	{
+		return currFramePosition;
+	}
+
+	public Tile GetMouseOverTile ()
+	{
+		return WorldController.Instance.world.getTileAt (Mathf.FloorToInt (currFramePosition.x), Mathf.FloorToInt (currFramePosition.y));
+	}
+
 	void Start ()
 	{
 		dragCursors = new List<GameObject> ();

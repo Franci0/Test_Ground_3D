@@ -15,7 +15,7 @@ public class Job
 	public string jobObjectType{ get; protected set; }
 
 
-	public Job (Tile tile, Action<Job> jobCompleteCallback, string jobObjectType, float jobTime = 1.0f)
+	public Job (Tile tile, Action<Job> jobCompleteCallback, string jobObjectType, float jobTime = 0.5f)
 	{
 		this.Tile = tile;
 		this.jobTime = jobTime;
