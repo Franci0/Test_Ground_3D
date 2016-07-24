@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 
 public class FurnitureSpriteController : MonoBehaviour
 {
@@ -15,11 +16,25 @@ public class FurnitureSpriteController : MonoBehaviour
 	public Sprite getSpriteForFurniture (Furniture furniture)
 	{
 		//Debug.Log ("getSpriteForFurniture");
+		string spriteName = furniture.furnitureType;
+
 		if (furniture.linksToNeighboors == false) {
-			return furnitureSprites [furniture.furnitureType];
+
+			if (furniture.furnitureType == "Door") {
+				if (furniture.furnitureParameters [World.openness] < 0.1f) {
+					spriteName = "Door";
+				} else if (furniture.furnitureParameters [World.openness] < 0.5f) {
+					spriteName = "Door_openness_1";
+				} else if (furniture.furnitureParameters [World.openness] < 0.9f) {
+					spriteName = "Door_openness_2";
+				} else {
+					spriteName = "Door_openness_3";
+				}
+			}
+			return furnitureSprites [spriteName];
 		}
 
-		string spriteName = furniture.furnitureType + "s0_";
+		spriteName += "s0_";
 
 		int x = furniture.tile.X;
 		int y = furniture.tile.Y;
@@ -71,7 +86,6 @@ public class FurnitureSpriteController : MonoBehaviour
 			Debug.LogError ("getSpriteForFurniture -- No sprite with name: " + spriteName);
 			return null;
 		}
-
 		//Debug.Log (furnitureSprites [spriteName].name);
 
 		return furnitureSprites [spriteName];
@@ -117,6 +131,16 @@ public class FurnitureSpriteController : MonoBehaviour
 		furniture_go.transform.position = new Vector3 (furniture.tile.X, furniture.tile.Y, 0);
 		furniture_go.transform.SetParent (this.transform, true);
 
+		if (furniture.furnitureType == "Door") {
+			Tile westTile = world.getTileAt (furniture.tile.X - 1, furniture.tile.Y);
+			Tile eastTile = world.getTileAt (furniture.tile.X + 1, furniture.tile.Y);
+
+			if (westTile != null && eastTile != null && westTile.furniture != null && eastTile.furniture != null && westTile.furniture.furnitureType == "Wall" && eastTile.furniture.furnitureType == "Wall") {
+				furniture_go.transform.rotation = Quaternion.Euler (0, 0, 90);
+				furniture_go.transform.Translate (1f, 0, 0, Space.World);
+			}
+		}
+
 		SpriteRenderer sr = furniture_go.AddComponent<SpriteRenderer> ();
 		sr.sprite = getSpriteForFurniture (furniture);
 		sr.sortingLayerName = "Furnitures";
@@ -143,9 +167,9 @@ public class FurnitureSpriteController : MonoBehaviour
 		//Debug.Log (furniture_go.GetComponent<SpriteRenderer> ());
 
 		SpriteRenderer sr = furniture_go.GetComponent<SpriteRenderer> ();
+
 		sr.sprite = getSpriteForFurniture (furniture);
 		sr.sortingLayerName = "Furnitures";
-
 
 	}
 
@@ -163,7 +187,7 @@ public class FurnitureSpriteController : MonoBehaviour
 
 		foreach (Sprite s in doorSprites) {
 			furnitureSprites [s.name] = s;
-			Debug.Log (s.name);
+			//Debug.Log (s.name);
 		}
 
 

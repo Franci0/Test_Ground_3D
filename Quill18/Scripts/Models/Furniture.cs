@@ -18,11 +18,11 @@ public class Furniture : IXmlSerializable
 	public Dictionary<string,float> furnitureParameters;
 	public Action<Furniture,float> updateActions;
 	public Func<Furniture,Accessiblity> isAccessible;
+	public Action<Furniture> onChangedCallback;
 
 	int width;
 	int height;
 	Func<Tile, bool> funcPositionValidation;
-	Action<Furniture> onChangedCallback;
 
 	public Furniture ()
 	{

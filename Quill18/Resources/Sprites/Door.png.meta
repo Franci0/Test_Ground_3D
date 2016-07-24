@@ -1,11 +1,17 @@
 fileFormatVersion: 2
 guid: 62a1953e855ee6f43a8d6b26dacdbb90
-timeCreated: 1457542625
+timeCreated: 1469279533
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Door
     21300002: Doors0_EW
+    21300004: Door_openness_1
+    21300006: Door_1
+    21300008: Door_openness_2
+    21300010: Door_3
+    21300012: Door_openness_3
+    21300014: Door_5
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,8 +57,10 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: Door
+    - serializedVersion: 2
+      name: Door
       rect:
         serializedVersion: 2
         x: 0
@@ -62,12 +70,9 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 0, y: 32}
-        - {x: 0, y: 0}
-        - {x: 32, y: 0}
-        - {x: 32, y: 32}
-    - name: Doors0_EW
+      outline: []
+    - serializedVersion: 2
+      name: Doors0_EW
       rect:
         serializedVersion: 2
         x: 64
@@ -77,11 +82,79 @@ TextureImporter:
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 0, y: 32}
-        - {x: 0, y: 0}
-        - {x: 32, y: 0}
-        - {x: 32, y: 32}
+      outline: []
+    - serializedVersion: 2
+      name: Door_openness_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 220
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: Door_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 220
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: Door_openness_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 184
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: Door_3
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 184
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: Door_openness_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 148
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: Door_5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 148
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

@@ -7,7 +7,10 @@ using System.Xml.Serialization;
 
 public class World : IXmlSerializable
 {
-	
+
+	public const String openness = "openness";
+	public const String is_opening = "is_opening";
+
 	public int Width{ get; protected set; }
 
 	public int Height{ get; protected set; }
@@ -22,9 +25,6 @@ public class World : IXmlSerializable
 	Action<Furniture> furnitureCreatedCallback;
 	Action<Tile> tileChangedCallback;
 	Action<Character> characterCreatedCallback;
-
-	public const String openess = "openess";
-	public const String is_opening = "is_opening";
 
 	public World ()
 	{
@@ -232,7 +232,7 @@ public class World : IXmlSerializable
 		furniturePrototypes = new Dictionary<string, Furniture> ();
 		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true));
 		furniturePrototypes.Add ("Door", new Furniture ("Door", 1, 1, 1, false));
-		furniturePrototypes ["Door"].furnitureParameters [openess] = 0;
+		furniturePrototypes ["Door"].furnitureParameters [openness] = 0;
 		furniturePrototypes ["Door"].furnitureParameters [is_opening] = 0;
 		furniturePrototypes ["Door"].updateActions += FurnitureActions.Door_UpdateAction;
 		furniturePrototypes ["Door"].isAccessible = FurnitureActions.Door_IsAccessible;

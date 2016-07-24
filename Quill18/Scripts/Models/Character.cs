@@ -119,10 +119,7 @@ public class Character : IXmlSerializable
 		}
 
 		if (myJob != null && currentTile == myJob.Tile) {
-			//if (pathAStar != null && pathAStar.count () == 1) {
-			//if (myJob != null) {
 			myJob.doWork (deltaTime);
-			//}
 		}
 	}
 

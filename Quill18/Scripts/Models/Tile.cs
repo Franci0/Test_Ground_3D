@@ -19,6 +19,7 @@ public enum Accessiblity
 
 public class Tile : IXmlSerializable
 {
+	const float baseTileMovementCost = 1;
 
 	public TileType Type {
 		get {
@@ -49,18 +50,16 @@ public class Tile : IXmlSerializable
 				return 0;
 			}
 			if (furniture == null) {
-				return 1;
+				return baseTileMovementCost;
 			}
-			return 1 * furniture.movementCostMultiplier;
+			return baseTileMovementCost * furniture.movementCostMultiplier;
 		}
 	}
 
 	public Job pendingFurnitureJob;
 
 	Action<Tile> tileChangedCallback;
-
 	TileType old;
-
 	TileType type = TileType.Empty;
 
 	public Tile ()
