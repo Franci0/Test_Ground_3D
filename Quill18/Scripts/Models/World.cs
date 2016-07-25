@@ -4,6 +4,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using UnityEngine.Rendering;
 
 public class World : IXmlSerializable
 {
@@ -15,19 +16,26 @@ public class World : IXmlSerializable
 
 	public int Height{ get; protected set; }
 
+
+	public Path_TileGraph tileGraph;
+
 	public JobQueue jobQueue;
 	public InventoryManager inventoryManager;
+
 	public List<Furniture> furnitures;
 	public List<Character> characters;
 	public List<Room> rooms;
-	public Path_TileGraph tileGraph;
 
-	Tile[,] tiles;
+	public Dictionary<string,Job> furnitureJobPrototypes;
+
 	Dictionary<string,Furniture> furniturePrototypes;
+
 	Action<Furniture> furnitureCreatedCallback;
 	Action<Tile> tileChangedCallback;
 	Action<Character> characterCreatedCallback;
 	Action<Inventory> inventoryCreatedCallback;
+
+	Tile[,] tiles;
 
 	public World ()
 	{
@@ -297,15 +305,20 @@ public class World : IXmlSerializable
 		invalidateTileGraph ();
 	}
 
-	void InstantiateFurniturePrototypes ()
+	void CreateFurniturePrototypes ()
 	{
 		furniturePrototypes = new Dictionary<string, Furniture> ();
+		furnitureJobPrototypes = new Dictionary<string, Job> ();
+
 		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true, true));
+		furnitureJobPrototypes.Add ("Wall", new Job (null, FurnitureActions.JobCompleteFurnitureBuilding, "Wall", 1f, new Inventory[]{ new Inventory ("Steel Plate", 5, 0) }));
+
 		furniturePrototypes.Add ("Door", new Furniture ("Door", 1.1f, 1, 1, false, true));
 		furniturePrototypes ["Door"].SetParameter (openness, 0);
 		furniturePrototypes ["Door"].SetParameter (is_opening, 0);
 		furniturePrototypes ["Door"].RegisterUpdateAction (FurnitureActions.Door_UpdateAction);
 		furniturePrototypes ["Door"].isAccessible = FurnitureActions.Door_IsAccessible;
+
 	}
 
 	void SetupWorld (int width, int height)
@@ -327,7 +340,7 @@ public class World : IXmlSerializable
 			}
 		}
 
-		InstantiateFurniturePrototypes ();
+		CreateFurniturePrototypes ();
 
 		characters = new List<Character> ();
 		furnitures = new List<Furniture> ();

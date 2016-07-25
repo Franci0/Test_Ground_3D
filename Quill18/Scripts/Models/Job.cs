@@ -4,23 +4,48 @@ using System;
 
 public class Job
 {
-	public Tile Tile{ get; protected set; }
+	public Tile Tile;
 
 	float jobTime;
 
 	Action<Job> jobCompleteCallback;
 	Action<Job> jobCancelCallback;
 
-	//to fix
 	public string jobObjectType{ get; protected set; }
 
+	Dictionary<string, Inventory> inventoryRequirements;
 
-	public Job (Tile tile, Action<Job> jobCompleteCallback, string jobObjectType, float jobTime = 0.5f)
+	public Job (Tile _tile, Action<Job> _jobCompleteCallback, string _jobObjectType, float _jobTime, Inventory[] _inventoryRequirements)
 	{
-		this.Tile = tile;
-		this.jobTime = jobTime;
-		this.jobCompleteCallback += jobCompleteCallback;
-		this.jobObjectType = jobObjectType;
+		Tile = _tile;
+		jobTime = _jobTime;
+		jobCompleteCallback += _jobCompleteCallback;
+		jobObjectType = _jobObjectType;
+
+		inventoryRequirements = new Dictionary<string, Inventory> ();
+
+		if (_inventoryRequirements != null) {
+			foreach (var inventory in _inventoryRequirements) {
+				inventoryRequirements [inventory.inventoryType] = inventory.Clone ();
+			}
+		}
+
+	}
+
+	protected Job (Job other)
+	{
+		Tile = other.Tile;
+		jobTime = other.jobTime;
+		jobCompleteCallback = other.jobCompleteCallback;
+		jobObjectType = other.jobObjectType;
+
+		inventoryRequirements = new Dictionary<string, Inventory> ();
+
+		if (other.inventoryRequirements != null) {
+			foreach (var inventory in other.inventoryRequirements.Values) {
+				inventoryRequirements [inventory.inventoryType] = inventory.Clone ();
+			}
+		}
 	}
 
 	public void registerJobCompleteCallback (Action<Job> callback)
@@ -58,5 +83,10 @@ public class Job
 		if (jobCancelCallback != null) {
 			jobCancelCallback (this);
 		}
+	}
+
+	public virtual Job Clone ()
+	{
+		return new Job (this);
 	}
 }

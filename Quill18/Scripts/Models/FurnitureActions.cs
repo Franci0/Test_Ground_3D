@@ -37,4 +37,10 @@ public static class FurnitureActions
 			return Accessiblity.Soon;
 		}
 	}
+
+	public static void JobCompleteFurnitureBuilding (Job job)
+	{
+		WorldController.Instance.world.PlaceFurniture (job.jobObjectType, job.Tile);
+		job.Tile.pendingFurnitureJob = null;
+	}
 }

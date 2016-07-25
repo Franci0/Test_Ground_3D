@@ -44,7 +44,7 @@ public class Character : IXmlSerializable
 
 	public void Update (float deltaTime)
 	{
-		update_DoJob (deltaTime);
+		UpdateDoJob (deltaTime);
 		update_DoMovement (deltaTime);
 
 		if (characterChangedCallback != null) {
@@ -106,7 +106,7 @@ public class Character : IXmlSerializable
 		
 	}
 
-	void update_DoJob (float deltaTime)
+	void UpdateDoJob (float deltaTime)
 	{
 		if (myJob == null) {
 			myJob = currentTile.World.jobQueue.Dequeue ();

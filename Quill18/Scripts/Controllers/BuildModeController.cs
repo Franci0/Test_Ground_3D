@@ -50,10 +50,16 @@ public class BuildModeController : MonoBehaviour
 
 			if (tile.pendingFurnitureJob == null && WorldController.Instance.world.isFurniturePlacementValid (furnitureType, tile)) {
 
-				Job job = new Job (tile, (theJob) => {	
-					WorldController.Instance.world.PlaceFurniture (furnitureType, theJob.Tile);
-					tile.pendingFurnitureJob = null;
-				}, furnitureType);
+				Job job;
+
+				if (WorldController.Instance.world.furnitureJobPrototypes.ContainsKey (furnitureType)) {
+					job = WorldController.Instance.world.furnitureJobPrototypes [furnitureType].Clone ();
+				} else {
+					Debug.LogError ("There is no furnitureJobPrototype for '" + furnitureType + "'");
+					job = new Job (tile, FurnitureActions.JobCompleteFurnitureBuilding, furnitureType, 0.1f, null);
+				}
+
+				job.Tile = tile;
 
 				tile.pendingFurnitureJob = job;
 

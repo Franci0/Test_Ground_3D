@@ -16,6 +16,13 @@ public class Inventory
 		
 	}
 
+	public Inventory (string _inventoryType, int _maxStackSize, int _stackSize)
+	{
+		inventoryType = _inventoryType;
+		maxStackSize = _maxStackSize;
+		stackSize = _stackSize;
+	}
+
 	public  virtual Inventory Clone ()
 	{
 		return new Inventory (this);
