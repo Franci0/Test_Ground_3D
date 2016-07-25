@@ -42,6 +42,8 @@ public class Tile : IXmlSerializable
 
 	public World World{ get; protected set; }
 
+	public Inventory inventory{ get; protected set; }
+
 	public float movementCost {
 		get {
 			if (type == TileType.Empty) {
@@ -60,7 +62,6 @@ public class Tile : IXmlSerializable
 	Action<Tile> tileChangedCallback;
 	TileType old;
 	TileType type = TileType.Empty;
-	Inventory inventory;
 
 	public Tile ()
 	{
@@ -88,10 +89,10 @@ public class Tile : IXmlSerializable
 	public bool placeFurniture (Furniture furnitureInstance)
 	{
 		
-		if (furnitureInstance == null) {
+		/*if (furnitureInstance == null) {
 			furniture = null;
 			return true;
-		}
+		}*/
 
 		if (furniture != null) {
 			//Debug.LogError ("There is already an InstalledObject: " + installedObject.ObjectType);
@@ -193,6 +194,32 @@ public class Tile : IXmlSerializable
 	public Tile East ()
 	{
 		return World.getTileAt (X + 1, Y);
+	}
+
+	public bool PlaceInventory (Inventory inv)
+	{
+		if (inventory != null) {
+			if (inventory.inventoryType != inv.inventoryType) {
+				Debug.LogError ("Trying to assign inventory to a tile that has some of a different tile");
+				return false;
+			}
+
+			int numToMove = inv.stackSize;
+
+			if (inventory.stackSize + numToMove > inventory.maxStackSize) {
+				numToMove = inventory.maxStackSize - inventory.stackSize;
+			}
+
+			inventory.stackSize += numToMove;
+			inv.stackSize -= numToMove;
+
+			return true;
+		}
+
+		inventory = inv.Clone ();
+		inventory.tile = this;
+		inv.stackSize = 0;
+		return true;
 	}
 
 }

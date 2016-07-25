@@ -16,6 +16,7 @@ public class World : IXmlSerializable
 	public int Height{ get; protected set; }
 
 	public JobQueue jobQueue;
+	public InventoryManager inventoryManager;
 	public List<Furniture> furnitures;
 	public List<Character> characters;
 	public List<Room> rooms;
@@ -26,6 +27,7 @@ public class World : IXmlSerializable
 	Action<Furniture> furnitureCreatedCallback;
 	Action<Tile> tileChangedCallback;
 	Action<Character> characterCreatedCallback;
+	Action<Inventory> inventoryCreatedCallback;
 
 	public World ()
 	{
@@ -97,6 +99,35 @@ public class World : IXmlSerializable
 				break;
 			}
 		}
+
+		//Debug Inventory - to remove
+		Inventory inventory = new Inventory ();
+		inventory.stackSize = 10;
+		Tile inventoryTile = getTileAt (Width / 2, Height / 2);
+		inventoryManager.PlaceInventory (inventoryTile, inventory);
+
+		if (inventoryCreatedCallback != null) {
+			inventoryCreatedCallback (inventoryTile.inventory);
+		}
+
+		inventory = new Inventory ();
+		inventory.stackSize = 18;
+		inventoryTile = getTileAt (Width / 2 + 2, Height / 2 + 2);
+		inventoryManager.PlaceInventory (inventoryTile, inventory);
+
+		if (inventoryCreatedCallback != null) {
+			inventoryCreatedCallback (inventoryTile.inventory);
+		}
+
+		inventory = new Inventory ();
+		inventory.stackSize = 45;
+		inventoryTile = getTileAt (Width / 2 + 1, Height / 2 + 2);
+		inventoryManager.PlaceInventory (inventoryTile, inventory);
+
+		if (inventoryCreatedCallback != null) {
+			inventoryCreatedCallback (inventoryTile.inventory);
+		}
+
 	}
 
 	public void randomizeTiles ()
@@ -246,6 +277,16 @@ public class World : IXmlSerializable
 		rooms.Add (room);
 	}
 
+	public void registerInventoryCreatedCallback (Action<Inventory> callback)
+	{
+		inventoryCreatedCallback += callback;
+	}
+
+	public void unregisterInventoryCreatedCallback (Action<Inventory> callback)
+	{
+		inventoryCreatedCallback -= callback;
+	}
+
 	void onTileChanged (Tile tile)
 	{
 		if (tileChangedCallback == null) {
@@ -290,6 +331,7 @@ public class World : IXmlSerializable
 
 		characters = new List<Character> ();
 		furnitures = new List<Furniture> ();
+		inventoryManager = new InventoryManager ();
 	}
 
 	void ReadXml_Tiles (XmlReader reader)

@@ -179,7 +179,7 @@ public class Furniture : IXmlSerializable
 
 	public void SetParameter (String key, float value)
 	{
-		furnitureParameters.Add (key, value);
+		furnitureParameters [key] = value;
 	}
 
 	public void ChangeParameter (String key, float value)
