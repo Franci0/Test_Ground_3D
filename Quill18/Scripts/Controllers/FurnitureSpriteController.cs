@@ -137,7 +137,6 @@ public class FurnitureSpriteController : MonoBehaviour
 
 			if (westTile != null && eastTile != null && westTile.furniture != null && eastTile.furniture != null && westTile.furniture.furnitureType == "Wall" && eastTile.furniture.furnitureType == "Wall") {
 				furniture_go.transform.rotation = Quaternion.Euler (0, 0, 90);
-				furniture_go.transform.Translate (1f, 0, 0, Space.World);
 			}
 		}
 
@@ -177,13 +176,13 @@ public class FurnitureSpriteController : MonoBehaviour
 	{
 		furnitureSprites = new Dictionary<string, Sprite> ();
 
-		Sprite[] wallSprites = Resources.LoadAll<Sprite> ("Sprites/Wall");
+		Sprite[] wallSprites = Resources.LoadAll<Sprite> ("Sprites/Furniture/Wall");
 
 		foreach (Sprite s in wallSprites) {
 			furnitureSprites [s.name] = s;
 		}
 
-		Sprite[] doorSprites = Resources.LoadAll<Sprite> ("Sprites/Door");
+		Sprite[] doorSprites = Resources.LoadAll<Sprite> ("Sprites/Furniture/Door");
 
 		foreach (Sprite s in doorSprites) {
 			furnitureSprites [s.name] = s;

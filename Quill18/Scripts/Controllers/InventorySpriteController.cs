@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
+using UnityEngine.UI;
 
 public class InventorySpriteController : MonoBehaviour
 {
+	public GameObject invetoryUIPrefab;
+
 	Dictionary<Inventory,GameObject> inventoryGameObjectMap;
 	Dictionary<string,Sprite> inventorySprites;
 
@@ -19,7 +21,7 @@ public class InventorySpriteController : MonoBehaviour
 
 		world.registerInventoryCreatedCallback (OnInventoryCreated);
 
-		foreach (String inventoryType in world.inventoryManager.inventories.Keys) {
+		foreach (string inventoryType in world.inventoryManager.inventories.Keys) {
 			foreach (Inventory inventory in world.inventoryManager.inventories[inventoryType]) {
 				OnInventoryCreated (inventory);
 			}
@@ -51,6 +53,12 @@ public class InventorySpriteController : MonoBehaviour
 		sr.sprite = inventorySprites [inventory.inventoryType];
 		sr.sortingLayerName = "Inventory";
 
+		if (inventory.maxStackSize > 1 && inventory.stackSize > 1) {
+			GameObject ui_go = Instantiate (invetoryUIPrefab);
+			ui_go.transform.SetParent (inventory_go.transform);
+			ui_go.transform.localPosition = Vector3.zero;
+			ui_go.GetComponentInChildren<Text> ().text = inventory.stackSize.ToString ();
+		}
 
 		//inventory.registerOnChangedCallback (OnInvetoryChanged);
 

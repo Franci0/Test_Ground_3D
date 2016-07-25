@@ -27,7 +27,7 @@ public class CharacterSpriteController : MonoBehaviour
 	{
 		characterSprites = new Dictionary<string, Sprite> ();
 
-		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/Avatar");
+		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/Characters/");
 
 		foreach (Sprite s in sprites) {
 			characterSprites [s.name] = s;

@@ -43,7 +43,6 @@ public class JobSpriteController : MonoBehaviour
 
 			if (westTile != null && eastTile != null && westTile.furniture != null && eastTile.furniture != null && westTile.furniture.furnitureType == "Wall" && eastTile.furniture.furnitureType == "Wall") {
 				job_go.transform.rotation = Quaternion.Euler (0, 0, 90);
-				job_go.transform.Translate (1f, 0, 0, Space.World);
 			}
 		}
 

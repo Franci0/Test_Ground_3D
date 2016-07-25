@@ -37,7 +37,7 @@ public class MouseController : MonoBehaviour
 
 	public Tile GetMouseOverTile ()
 	{
-		return WorldController.Instance.world.getTileAt (Mathf.FloorToInt (currFramePosition.x), Mathf.FloorToInt (currFramePosition.y));
+		return WorldController.Instance.getTileAtWorldCoord (currFramePosition);//WorldController.Instance.world.getTileAt (Mathf.FloorToInt (currFramePosition.x), Mathf.FloorToInt (currFramePosition.y));
 	}
 
 	void Start ()
@@ -131,10 +131,10 @@ public class MouseController : MonoBehaviour
 
 	void calculateAreaDrag ()
 	{
-		start_x = Mathf.FloorToInt (dragStartPosition.x);
-		end_x = Mathf.FloorToInt (currFramePosition.x);
-		start_y = Mathf.FloorToInt (dragStartPosition.y);
-		end_y = Mathf.FloorToInt (currFramePosition.y);
+		start_x = Mathf.FloorToInt (dragStartPosition.x + 0.5f);
+		end_x = Mathf.FloorToInt (currFramePosition.x + 0.5f);
+		start_y = Mathf.FloorToInt (dragStartPosition.y + 0.5f);
+		end_y = Mathf.FloorToInt (currFramePosition.y + 0.5f);
 
 		if (end_x < start_x) {
 			tmpInt = start_x;
