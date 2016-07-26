@@ -21,12 +21,24 @@ public class Character : IXmlSerializable
 
 	public Tile currentTile{ get; protected set; }
 
-	Tile destinationTile;
+	Tile destinationTile {
+		get { 
+			return destinationTile;
+		}
+		set {
+			if (destinationTile != value) {
+				destinationTile = value;
+				pathAStar = null;
+			}
+		}
+	}
+
 	Tile nextTile;
 	Path_AStar pathAStar;
 	float movementPercentage;
 
 	Job myJob;
+	Inventory inventory;
 
 	float speed = 4f;
 
@@ -45,7 +57,7 @@ public class Character : IXmlSerializable
 	public void Update (float deltaTime)
 	{
 		UpdateDoJob (deltaTime);
-		update_DoMovement (deltaTime);
+		UpdateDoMovement (deltaTime);
 
 		if (characterChangedCallback != null) {
 			characterChangedCallback (this);
@@ -82,10 +94,9 @@ public class Character : IXmlSerializable
 
 	}
 
-	public void abbandonJob ()
+	public void AbbandonJob ()
 	{
 		nextTile = destinationTile = currentTile;
-		pathAStar = null;
 		currentTile.World.jobQueue.Enqueue (myJob);
 		myJob = null;
 	}
@@ -109,21 +120,51 @@ public class Character : IXmlSerializable
 	void UpdateDoJob (float deltaTime)
 	{
 		if (myJob == null) {
-			myJob = currentTile.World.jobQueue.Dequeue ();
-
-			if (myJob != null) {
-				destinationTile = myJob.Tile;
-				myJob.registerJobCompleteCallback (onJobEnded);
-				myJob.registerJobCancelCallback (onJobEnded);
-			}
+			GetNewJob ();
 		}
 
-		if (myJob != null && currentTile == myJob.Tile) {
+		if (!myJob.HasAllMaterials ()) {
+			if (inventory != null) {
+				if (myJob.DesiresInventoryType (inventory)) {
+					if (currentTile == myJob.Tile) {
+						currentTile.World.inventoryManager.PlaceInventory (myJob, inventory);
+
+						if (inventory.stackSize == 0) {
+							inventory = null;
+
+						} else {
+							Debug.LogError ("UpdateDoJob - character is still carrying inventory, which shouldn't be. Just setting to Null now");
+							inventory = null;
+						}
+
+					} else {
+						destinationTile = myJob.Tile;
+					}
+
+					return;
+
+				} else {
+					if (!currentTile.World.inventoryManager.PlaceInventory (currentTile, inventory)) {
+						Debug.LogError ("UpdateDoJob - character tried to dump inventory to invalid tile");
+						inventory = null;
+					}
+				}
+
+			} else {
+				
+			}
+
+			return;
+		}
+
+		destinationTile = myJob.Tile;
+
+		if (/*myJob != null &&*/ currentTile == myJob.Tile) {
 			myJob.doWork (deltaTime);
 		}
 	}
 
-	void update_DoMovement (float deltaTime)
+	void UpdateDoMovement (float deltaTime)
 	{
 		if (currentTile == destinationTile) {
 			pathAStar = null;
@@ -136,8 +177,7 @@ public class Character : IXmlSerializable
 
 				if (pathAStar.count () == 0) {
 					Debug.LogError ("Path_AStar -- returned (0) no path to destinationTile");
-					abbandonJob ();
-					pathAStar = null;
+					AbbandonJob ();
 					return;
 				}
 
@@ -171,6 +211,27 @@ public class Character : IXmlSerializable
 		if (movementPercentage >= 1) {
 			currentTile = nextTile;
 			movementPercentage = 0;
+		}
+	}
+
+	void GetNewJob ()
+	{
+		myJob = currentTile.World.jobQueue.Dequeue ();
+
+		if (myJob == null) {
+			destinationTile = currentTile;
+			return;
+		}
+
+		destinationTile = myJob.Tile;
+		myJob.registerJobCompleteCallback (onJobEnded);
+		myJob.registerJobCancelCallback (onJobEnded);
+		pathAStar = new Path_AStar (currentTile.World, currentTile, destinationTile);
+
+		if (pathAStar.count () == 0) {
+			Debug.LogError ("Path_AStar -- returned (0) no path to target job tile");
+			AbbandonJob ();
+			destinationTile = currentTile;
 		}
 	}
 }

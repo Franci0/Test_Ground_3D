@@ -200,7 +200,7 @@ public class Tile : IXmlSerializable
 	{
 		if (inventory != null) {
 			if (inventory.inventoryType != inv.inventoryType) {
-				Debug.LogError ("Trying to assign inventory to a tile that has some of a different tile");
+				Debug.LogError ("Trying to assign inventory to a tile that has some of a different inventory");
 				return false;
 			}
 

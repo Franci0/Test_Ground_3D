@@ -36,4 +36,27 @@ public class InventoryManager
 		return true;
 	}
 
+	public bool PlaceInventory (Job job, Inventory inventory)
+	{
+		if (!job.inventoryRequirements.ContainsKey (inventory.inventoryType)) {
+			Debug.LogError ("PlaceInventory - trying to add inventory to a job that is doesn't want");
+			return false;
+		}
+
+		job.inventoryRequirements [inventory.inventoryType].stackSize += inventory.stackSize;
+
+		if (job.inventoryRequirements [inventory.inventoryType].maxStackSize > job.inventoryRequirements [inventory.inventoryType].stackSize) {
+			inventory.stackSize = job.inventoryRequirements [inventory.inventoryType].stackSize - job.inventoryRequirements [inventory.inventoryType].maxStackSize;
+			job.inventoryRequirements [inventory.inventoryType].stackSize = job.inventoryRequirements [inventory.inventoryType].maxStackSize;
+		} else {
+			inventory.stackSize = 0;
+		}
+
+		if (inventory.stackSize == 0 && inventories.ContainsKey (inventory.inventoryType)) {
+			inventories [inventory.inventoryType].Remove (inventory);
+		}
+
+		return true;
+	}
+
 }

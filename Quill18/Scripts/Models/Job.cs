@@ -4,16 +4,14 @@ using System;
 
 public class Job
 {
+	public string jobObjectType{ get; protected set; }
+
+	public Dictionary<string, Inventory> inventoryRequirements;
 	public Tile Tile;
 
 	float jobTime;
-
 	Action<Job> jobCompleteCallback;
 	Action<Job> jobCancelCallback;
-
-	public string jobObjectType{ get; protected set; }
-
-	Dictionary<string, Inventory> inventoryRequirements;
 
 	public Job (Tile _tile, Action<Job> _jobCompleteCallback, string _jobObjectType, float _jobTime, Inventory[] _inventoryRequirements)
 	{
@@ -27,6 +25,7 @@ public class Job
 		if (_inventoryRequirements != null) {
 			foreach (var inventory in _inventoryRequirements) {
 				inventoryRequirements [inventory.inventoryType] = inventory.Clone ();
+
 			}
 		}
 
@@ -88,5 +87,29 @@ public class Job
 	public virtual Job Clone ()
 	{
 		return new Job (this);
+	}
+
+	public bool HasAllMaterials ()
+	{
+		foreach (var inventory in inventoryRequirements.Values) {
+			if (inventory.maxStackSize > inventory.stackSize) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public bool DesiresInventoryType (Inventory inventory)
+	{
+		if (!inventoryRequirements.ContainsKey (inventory.inventoryType)) {
+			return false;
+		}
+
+		if (inventoryRequirements [inventory.inventoryType].stackSize >= inventoryRequirements [inventory.inventoryType].maxStackSize) {
+			return false;
+		}
+
+		return true;
 	}
 }
