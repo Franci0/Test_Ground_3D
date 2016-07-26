@@ -21,13 +21,17 @@ public class Character : IXmlSerializable
 
 	public Tile currentTile{ get; protected set; }
 
+	public Inventory inventory;
+
+	Tile _destinationTile;
+
 	Tile destinationTile {
 		get { 
-			return destinationTile;
+			return _destinationTile;
 		}
 		set {
-			if (destinationTile != value) {
-				destinationTile = value;
+			if (_destinationTile != value) {
+				_destinationTile = value;
 				pathAStar = null;
 			}
 		}
@@ -36,12 +40,8 @@ public class Character : IXmlSerializable
 	Tile nextTile;
 	Path_AStar pathAStar;
 	float movementPercentage;
-
 	Job myJob;
-	Inventory inventory;
-
 	float speed = 4f;
-
 	Action<Character> characterChangedCallback;
 
 	public Character ()
@@ -123,44 +123,66 @@ public class Character : IXmlSerializable
 			GetNewJob ();
 		}
 
-		if (!myJob.HasAllMaterials ()) {
-			if (inventory != null) {
-				if (myJob.DesiresInventoryType (inventory)) {
-					if (currentTile == myJob.Tile) {
-						currentTile.World.inventoryManager.PlaceInventory (myJob, inventory);
+		if (myJob != null) {
+			if (!myJob.HasAllMaterials ()) {
+				if (inventory != null) {
+					if (myJob.DesiresInventoryType (inventory) > 0) {
+						if (currentTile == myJob.Tile) {
+							currentTile.World.inventoryManager.PlaceInventory (myJob, inventory);
 
-						if (inventory.stackSize == 0) {
-							inventory = null;
+							if (inventory.stackSize == 0) {
+								inventory = null;
+
+							} else {
+								Debug.LogError ("UpdateDoJob - character is still carrying inventory, which shouldn't be. Just setting to Null now");
+								inventory = null;
+							}
 
 						} else {
-							Debug.LogError ("UpdateDoJob - character is still carrying inventory, which shouldn't be. Just setting to Null now");
-							inventory = null;
+							destinationTile = myJob.Tile;
 						}
 
+						return;
+
 					} else {
-						destinationTile = myJob.Tile;
+						if (!currentTile.World.inventoryManager.PlaceInventory (currentTile, inventory)) {
+							Debug.LogError ("UpdateDoJob - character tried to dump inventory to invalid tile");
+							inventory = null;
+						}
 					}
 
-					return;
-
 				} else {
-					if (!currentTile.World.inventoryManager.PlaceInventory (currentTile, inventory)) {
-						Debug.LogError ("UpdateDoJob - character tried to dump inventory to invalid tile");
-						inventory = null;
+					if (currentTile.inventory != null && myJob.DesiresInventoryType (currentTile.inventory) > 0) {
+						currentTile.World.inventoryManager.PlaceInventory (this, currentTile.inventory, myJob.DesiresInventoryType (currentTile.inventory));
+
+					} else {
+						Inventory desired = myJob.GetFirstDesiredInventory ();
+
+						if (desired != null) {
+							Inventory supplier = currentTile.World.inventoryManager.GetClosestInventoryOfType (
+								                     desired.inventoryType, 
+								                     currentTile, 
+								                     desired.maxStackSize - desired.stackSize);
+
+							if (supplier == null) {
+								Debug.Log ("UpdateDoJob - No tile contains inventory of type " + desired.inventoryType + " to satisfy job requirements");
+								AbbandonJob ();
+								return;
+							}
+
+							destinationTile = supplier.tile;
+						}
 					}
 				}
 
-			} else {
-				
+				return;
 			}
 
-			return;
-		}
+			destinationTile = myJob.Tile;
 
-		destinationTile = myJob.Tile;
-
-		if (/*myJob != null &&*/ currentTile == myJob.Tile) {
-			myJob.doWork (deltaTime);
+			if (/*myJob != null &&*/ currentTile == myJob.Tile) {
+				myJob.doWork (deltaTime);
+			}
 		}
 	}
 

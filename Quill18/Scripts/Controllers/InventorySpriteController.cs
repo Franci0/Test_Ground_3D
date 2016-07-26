@@ -60,7 +60,7 @@ public class InventorySpriteController : MonoBehaviour
 			ui_go.GetComponentInChildren<Text> ().text = inventory.stackSize.ToString ();
 		}
 
-		//inventory.registerOnChangedCallback (OnInvetoryChanged);
+		inventory.registerInventoryChangedCallback (OnInventoryChanged);
 
 	}
 
@@ -72,8 +72,11 @@ public class InventorySpriteController : MonoBehaviour
 		}
 
 		GameObject inventory_go = inventoryGameObjectMap [inventory];
+		Text text = inventory_go.GetComponentInChildren<Text> ();
 
-		inventory_go.transform.position = new Vector3 (inventory.tile.X, inventory.tile.Y, 0);
+		if (text != null) {
+			text.text = inventory.stackSize.ToString ();
+		}
 	}
 
 }

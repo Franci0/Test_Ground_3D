@@ -42,7 +42,7 @@ public class Tile : IXmlSerializable
 
 	public World World{ get; protected set; }
 
-	public Inventory inventory{ get; protected set; }
+	public Inventory inventory;
 
 	public float movementCost {
 		get {

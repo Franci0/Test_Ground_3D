@@ -6,10 +6,28 @@ public class Inventory
 {
 	public String inventoryType = "Steel Plate";
 	public int maxStackSize = 50;
-	public int stackSize = 1;
+
+	public int stackSize {
+		get {
+			return _stackSize;
+		}
+		set {
+			if (_stackSize != value) {
+				_stackSize = value;
+
+				if (inventoryChangedCallback != null) {
+					inventoryChangedCallback (this);
+				}
+			}
+		}
+	}
 
 	public Tile tile;
 	public Character character;
+
+	protected int _stackSize = 1;
+
+	Action<Inventory> inventoryChangedCallback;
 
 	public Inventory ()
 	{
@@ -33,5 +51,15 @@ public class Inventory
 		inventoryType = other.inventoryType;
 		maxStackSize = other.maxStackSize;
 		stackSize = other.stackSize;
+	}
+
+	public void registerInventoryChangedCallback (Action<Inventory> callback)
+	{
+		inventoryChangedCallback += callback;
+	}
+
+	public void unregisterInventoryTypeChangedCallback (Action<Inventory> callback)
+	{
+		inventoryChangedCallback -= callback;
 	}
 }

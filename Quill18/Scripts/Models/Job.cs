@@ -100,16 +100,30 @@ public class Job
 		return true;
 	}
 
-	public bool DesiresInventoryType (Inventory inventory)
+	public int DesiresInventoryType (Inventory inventory)
 	{
 		if (!inventoryRequirements.ContainsKey (inventory.inventoryType)) {
-			return false;
+			return 0;
 		}
 
 		if (inventoryRequirements [inventory.inventoryType].stackSize >= inventoryRequirements [inventory.inventoryType].maxStackSize) {
-			return false;
+			return 0;
 		}
 
-		return true;
+		//Debug.Log (inventoryRequirements [inventory.inventoryType].maxStackSize - inventoryRequirements [inventory.inventoryType].stackSize);
+
+		return inventoryRequirements [inventory.inventoryType].maxStackSize - inventoryRequirements [inventory.inventoryType].stackSize;
 	}
+
+	public Inventory GetFirstDesiredInventory ()
+	{
+		foreach (Inventory inventory in inventoryRequirements.Values) {
+			if (inventory.maxStackSize > inventory.stackSize) {
+				return inventory;
+			}
+		}
+
+		return null;
+	}
+
 }

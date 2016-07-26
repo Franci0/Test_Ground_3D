@@ -18,12 +18,8 @@ public class InventoryManager
 		if (!tile.PlaceInventory (inventory)) {
 			return false;
 		}
-
-		/*inventories.Add (inventory);
-		return true;*/
-		if (inventory.stackSize == 0 && inventories.ContainsKey (tile.inventory.inventoryType)) {
-			inventories [inventory.inventoryType].Remove (inventory);
-		}
+		
+		CleanupInventory (inventory);
 
 		if (tileWasEmpty) {
 			if (!inventories.ContainsKey (tile.inventory.inventoryType)) {
@@ -45,18 +41,82 @@ public class InventoryManager
 
 		job.inventoryRequirements [inventory.inventoryType].stackSize += inventory.stackSize;
 
-		if (job.inventoryRequirements [inventory.inventoryType].maxStackSize > job.inventoryRequirements [inventory.inventoryType].stackSize) {
+		if (job.inventoryRequirements [inventory.inventoryType].maxStackSize < job.inventoryRequirements [inventory.inventoryType].stackSize) {
 			inventory.stackSize = job.inventoryRequirements [inventory.inventoryType].stackSize - job.inventoryRequirements [inventory.inventoryType].maxStackSize;
 			job.inventoryRequirements [inventory.inventoryType].stackSize = job.inventoryRequirements [inventory.inventoryType].maxStackSize;
 		} else {
 			inventory.stackSize = 0;
 		}
 
-		if (inventory.stackSize == 0 && inventories.ContainsKey (inventory.inventoryType)) {
-			inventories [inventory.inventoryType].Remove (inventory);
-		}
+		CleanupInventory (inventory);
 
 		return true;
+	}
+
+	public Inventory GetClosestInventoryOfType (string inventoryType, Tile tile, int desiredAmount)
+	{
+		if (!inventories.ContainsKey (inventoryType)) {
+			Debug.LogError ("GetClosestInventoryOfType - No items of desired type");
+			return null;
+		}
+
+		foreach (Inventory inventory in inventories[inventoryType]) {
+			if (inventory.tile != null) {
+				return inventory;
+			}
+		}
+
+		return null;
+	}
+
+	public bool PlaceInventory (Character character, Inventory sourceInventory, int amount = -1)
+	{
+		if (amount < 0) {
+			amount = sourceInventory.stackSize;
+		}
+
+		if (character.inventory == null) {
+			character.inventory = sourceInventory.Clone ();
+			character.inventory.stackSize = 0;
+			inventories [character.inventory.inventoryType].Add (character.inventory);
+
+		} else if (character.inventory.inventoryType != sourceInventory.inventoryType) {
+			Debug.LogError ("PlaceInventory - character is trying to pick up a missmatched inventory type");
+			return false;
+		}
+
+		character.inventory.stackSize += amount;
+
+		if (character.inventory.maxStackSize < character.inventory.stackSize) {
+			sourceInventory.stackSize = character.inventory.stackSize - character.inventory.maxStackSize;
+			character.inventory.stackSize = character.inventory.maxStackSize;
+
+		} else {
+			sourceInventory.stackSize -= amount;
+		}
+
+		CleanupInventory (sourceInventory);
+
+		return true;
+	}
+
+	void CleanupInventory (Inventory inventory)
+	{
+		if (inventory.stackSize == 0) {
+			if (inventories.ContainsKey (inventory.inventoryType)) {
+				inventories [inventory.inventoryType].Remove (inventory);
+			}
+
+			if (inventory.tile != null) {
+				inventory.tile.inventory = null;
+				inventory.tile = null;
+			}
+
+			if (inventory.character != null) {
+				inventory.character.inventory = null;
+				inventory.character = null;
+			}
+		}
 	}
 
 }
