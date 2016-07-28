@@ -31,6 +31,11 @@ public class FurnitureSpriteController : MonoBehaviour
 					spriteName = "Door_openness_3";
 				}
 			}
+
+			if (spriteName != "Door") {
+				//Debug.Log (spriteName);
+			}
+
 			return furnitureSprites [spriteName];
 		}
 
@@ -123,6 +128,8 @@ public class FurnitureSpriteController : MonoBehaviour
 	{
 		//only 1x1 object
 		//Debug.Log ("OnFurnitureCreated");
+		//Debug.Log (furniture.furnitureType);
+
 		GameObject furniture_go = new GameObject ();
 
 		furnitureGameObjectMap.Add (furniture, furniture_go);
@@ -176,7 +183,7 @@ public class FurnitureSpriteController : MonoBehaviour
 	{
 		furnitureSprites = new Dictionary<string, Sprite> ();
 
-		Sprite[] wallSprites = Resources.LoadAll<Sprite> ("Sprites/Furniture/Wall");
+		/*Sprite[] wallSprites = Resources.LoadAll<Sprite> ("Sprites/Furniture/Wall");
 
 		foreach (Sprite s in wallSprites) {
 			furnitureSprites [s.name] = s;
@@ -189,6 +196,18 @@ public class FurnitureSpriteController : MonoBehaviour
 			//Debug.Log (s.name);
 		}
 
+		Sprite[] stockpileSprites = Resources.LoadAll<Sprite> ("Sprites/Furniture/Stockpile");
+
+		foreach (Sprite s in stockpileSprites) {
+			furnitureSprites [s.name] = s;
+			Debug.Log (s.name);
+		}*/
+
+		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/Furniture");
+
+		foreach (Sprite sprite in sprites) {
+			furnitureSprites [sprite.name] = sprite;
+		}
 
 	}
 

@@ -129,6 +129,7 @@ public class Character : IXmlSerializable
 					if (myJob.DesiresInventoryType (inventory) > 0) {
 						if (currentTile == myJob.Tile) {
 							currentTile.World.inventoryManager.PlaceInventory (myJob, inventory);
+							myJob.doWork (0f);
 
 							if (inventory.stackSize == 0) {
 								inventory = null;
@@ -153,7 +154,11 @@ public class Character : IXmlSerializable
 
 				} else {
 					if (currentTile.inventory != null && myJob.DesiresInventoryType (currentTile.inventory) > 0) {
-						currentTile.World.inventoryManager.PlaceInventory (this, currentTile.inventory, myJob.DesiresInventoryType (currentTile.inventory));
+						currentTile.World.inventoryManager.PlaceInventory (
+							this, 
+							currentTile.inventory, 
+							myJob.DesiresInventoryType (currentTile.inventory)
+						);
 
 					} else {
 						Inventory desired = myJob.GetFirstDesiredInventory ();

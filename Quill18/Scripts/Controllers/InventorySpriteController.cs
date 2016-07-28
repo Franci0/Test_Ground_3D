@@ -60,7 +60,7 @@ public class InventorySpriteController : MonoBehaviour
 			ui_go.GetComponentInChildren<Text> ().text = inventory.stackSize.ToString ();
 		}
 
-		inventory.registerInventoryChangedCallback (OnInventoryChanged);
+		inventory.RegisterInventoryChangedCallback (OnInventoryChanged);
 
 	}
 
@@ -72,10 +72,18 @@ public class InventorySpriteController : MonoBehaviour
 		}
 
 		GameObject inventory_go = inventoryGameObjectMap [inventory];
-		Text text = inventory_go.GetComponentInChildren<Text> ();
 
-		if (text != null) {
-			text.text = inventory.stackSize.ToString ();
+		if (inventory.stackSize > 0) {
+			Text text = inventory_go.GetComponentInChildren<Text> ();
+
+			if (text != null) {
+				text.text = inventory.stackSize.ToString ();
+			}
+
+		} else {
+			Destroy (inventory_go);
+			inventoryGameObjectMap.Remove (inventory);
+			inventory.UnregisterInventoryTypeChangedCallback (OnInventoryChanged);
 		}
 	}
 

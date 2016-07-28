@@ -1,12 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[ExecuteInEditMode]
 public class MenuController : MonoBehaviour
 {
 
 	public float childHeight = 35f;
 
 	void Start ()
+	{
+		adjustSize ();
+	}
+
+	void Update ()
 	{
 		adjustSize ();
 	}

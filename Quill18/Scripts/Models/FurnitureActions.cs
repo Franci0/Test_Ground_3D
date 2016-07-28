@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public static class FurnitureActions
 {
@@ -42,5 +43,59 @@ public static class FurnitureActions
 	{
 		WorldController.Instance.world.PlaceFurniture (job.jobObjectType, job.Tile);
 		job.Tile.pendingFurnitureJob = null;
+	}
+
+	public static void Stockpile_UpdateAction (Furniture furniture, float deltaTime)
+	{
+		Inventory furnitureInventory = furniture.tile.inventory;
+
+		if (furnitureInventory == null) {
+			if (furniture.JobCount () > 0) {
+				return;
+			}
+
+			Job job = new Job (
+				          furniture.tile,
+				          null,
+				          null,
+				          0f,
+				          new Inventory[] { new Inventory ("Steel Plate", 50, 0) }
+			          );
+
+			job.registerJobWorkedCallback (Stockpile_JobWorked);
+			furniture.AddJob (job);
+
+		} else if (furnitureInventory.stackSize < furnitureInventory.maxStackSize) {
+			if (furniture.JobCount () > 0) {
+				return;
+			}
+
+			Inventory desired = furnitureInventory.Clone ();
+			desired.maxStackSize -= desired.stackSize;
+			desired.stackSize = 0;
+
+			Job job = new Job (
+				          furniture.tile,
+				          null,
+				          null,
+				          0f,
+				          new Inventory[] { desired }
+			          );
+
+			job.registerJobWorkedCallback (Stockpile_JobWorked);
+			furniture.AddJob (job);
+		}
+	}
+
+	static void Stockpile_JobWorked (Job job)
+	{
+		job.Tile.furniture.RemoveJob (job);
+
+		foreach (Inventory inventory in job.inventoryRequirements.Values) {
+			if (inventory.stackSize > 0) {
+				job.Tile.World.inventoryManager.PlaceInventory (job.Tile, inventory);
+				return;
+			}
+		}
 	}
 }

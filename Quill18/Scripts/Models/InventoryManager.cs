@@ -73,6 +73,8 @@ public class InventoryManager
 	{
 		if (amount < 0) {
 			amount = sourceInventory.stackSize;
+		} else {
+			amount = Mathf.Min (amount, sourceInventory.stackSize);
 		}
 
 		if (character.inventory == null) {

@@ -15,6 +15,11 @@ public class JobQueue
 
 	public void Enqueue (Job job)
 	{
+		if (job.jobTime < 0) {
+			job.doWork (0f);
+			return;	
+		}
+
 		jobQueue.Enqueue (job);
 
 		if (jobCreatedCallback != null) {
@@ -39,6 +44,19 @@ public class JobQueue
 	public void unregisterJobCreationCallback (Action<Job> callback)
 	{
 		jobCreatedCallback -= callback;
+	}
+
+	public void Remove (Job job)
+	{
+		List<Job> jobs = new List<Job> (jobQueue);
+
+		if (!jobs.Contains (job)) {
+			Debug.LogError ("Trying to remove a job doesn't exist on the queue");
+			return;
+		}
+
+		jobs.Remove (job);
+		jobQueue = new Queue<Job> (jobs);
 	}
 
 }

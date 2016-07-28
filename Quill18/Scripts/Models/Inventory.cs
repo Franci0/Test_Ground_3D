@@ -53,12 +53,12 @@ public class Inventory
 		stackSize = other.stackSize;
 	}
 
-	public void registerInventoryChangedCallback (Action<Inventory> callback)
+	public void RegisterInventoryChangedCallback (Action<Inventory> callback)
 	{
 		inventoryChangedCallback += callback;
 	}
 
-	public void unregisterInventoryTypeChangedCallback (Action<Inventory> callback)
+	public void UnregisterInventoryTypeChangedCallback (Action<Inventory> callback)
 	{
 		inventoryChangedCallback -= callback;
 	}

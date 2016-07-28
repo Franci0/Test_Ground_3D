@@ -109,8 +109,7 @@ public class World : IXmlSerializable
 		}
 
 		//Debug Inventory - to remove
-		Inventory inventory = new Inventory ();
-		inventory.stackSize = 10;
+		Inventory inventory = new Inventory ("Steel Plate", 50, 2);
 		Tile inventoryTile = getTileAt (Width / 2, Height / 2);
 		inventoryManager.PlaceInventory (inventoryTile, inventory);
 
@@ -118,8 +117,7 @@ public class World : IXmlSerializable
 			inventoryCreatedCallback (inventoryTile.inventory);
 		}
 
-		inventory = new Inventory ();
-		inventory.stackSize = 18;
+		inventory = new Inventory ("Steel Plate", 50, 3);
 		inventoryTile = getTileAt (Width / 2 + 2, Height / 2 + 2);
 		inventoryManager.PlaceInventory (inventoryTile, inventory);
 
@@ -127,8 +125,7 @@ public class World : IXmlSerializable
 			inventoryCreatedCallback (inventoryTile.inventory);
 		}
 
-		inventory = new Inventory ();
-		inventory.stackSize = 45;
+		inventory = new Inventory ("Steel Plate", 50, 4);
 		inventoryTile = getTileAt (Width / 2 + 1, Height / 2 + 2);
 		inventoryManager.PlaceInventory (inventoryTile, inventory);
 
@@ -310,14 +307,76 @@ public class World : IXmlSerializable
 		furniturePrototypes = new Dictionary<string, Furniture> ();
 		furnitureJobPrototypes = new Dictionary<string, Job> ();
 
-		furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true, true));
-		furnitureJobPrototypes.Add ("Wall", new Job (null, FurnitureActions.JobCompleteFurnitureBuilding, "Wall", 1f, new Inventory[]{ new Inventory ("Steel Plate", 5, 0) }));
+		furniturePrototypes.Add (
+			"Wall", 
+			new Furniture (
+				"Wall", 
+				0, 
+				1, 
+				1, 
+				true, 
+				true
+			)
+		);
 
-		furniturePrototypes.Add ("Door", new Furniture ("Door", 1.1f, 1, 1, false, true));
+		furnitureJobPrototypes.Add (
+			"Wall", 
+			new Job (
+				null, 
+				FurnitureActions.JobCompleteFurnitureBuilding, 
+				"Wall", 
+				1f, 
+				new Inventory[] { 
+					new Inventory (
+						"Steel Plate", 
+						5, 
+						0
+					)
+				}
+			)
+		);
+
+		furniturePrototypes.Add (
+			"Door", 
+			new Furniture (
+				"Door", 
+				1.1f, 
+				1, 
+				1, 
+				false, 
+				true
+			)
+		);
+
 		furniturePrototypes ["Door"].SetParameter (openness, 0);
 		furniturePrototypes ["Door"].SetParameter (is_opening, 0);
 		furniturePrototypes ["Door"].RegisterUpdateAction (FurnitureActions.Door_UpdateAction);
 		furniturePrototypes ["Door"].isAccessible = FurnitureActions.Door_IsAccessible;
+
+		furniturePrototypes.Add (
+			"Stockpile", 
+			new Furniture (
+				"Stockpile", 
+				1, 
+				1, 
+				1, 
+				false, 
+				false
+			)
+		);
+
+		furnitureJobPrototypes.Add (
+			"Stockpile", 
+			new Job (
+				null, 
+				FurnitureActions.JobCompleteFurnitureBuilding, 
+				"Stockpile", 
+				-1, 
+				null
+			)
+		);
+
+		furniturePrototypes ["Stockpile"].RegisterUpdateAction (FurnitureActions.Stockpile_UpdateAction);
 
 	}
 

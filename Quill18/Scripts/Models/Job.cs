@@ -9,9 +9,13 @@ public class Job
 	public Dictionary<string, Inventory> inventoryRequirements;
 	public Tile Tile;
 
-	float jobTime;
+	public float jobTime{ get; protected set; }
+
 	Action<Job> jobCompleteCallback;
 	Action<Job> jobCancelCallback;
+	Action<Job> jobWorkedCallback;
+
+	bool acceptsAnyInventoryItem = false;
 
 	public Job (Tile _tile, Action<Job> _jobCompleteCallback, string _jobObjectType, float _jobTime, Inventory[] _inventoryRequirements)
 	{
@@ -67,21 +71,36 @@ public class Job
 		jobCancelCallback -= callback;
 	}
 
+	public void registerJobWorkedCallback (Action<Job> callback)
+	{
+		jobWorkedCallback += callback;
+	}
+
+	public void unregisterJobWorkedCallback (Action<Job> callback)
+	{
+		jobWorkedCallback -= callback;
+	}
+
 	public void doWork (float workTime)
 	{
 		//Debug.Log (jobTime + " , " + workTime);
 		jobTime -= workTime;
+		if (jobWorkedCallback != null) {
+			jobWorkedCallback (this);
+		}
 
 		if (jobTime <= 0 && jobCompleteCallback != null) {
 			jobCompleteCallback (this);
 		}
 	}
 
-	public void cancelJob ()
+	public void CancelJob ()
 	{
 		if (jobCancelCallback != null) {
 			jobCancelCallback (this);
 		}
+
+		Tile.World.jobQueue.Remove (this);
 	}
 
 	public virtual Job Clone ()
@@ -102,6 +121,10 @@ public class Job
 
 	public int DesiresInventoryType (Inventory inventory)
 	{
+		if (acceptsAnyInventoryItem) {
+			return inventory.maxStackSize;
+		}
+
 		if (!inventoryRequirements.ContainsKey (inventory.inventoryType)) {
 			return 0;
 		}

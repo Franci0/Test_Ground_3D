@@ -26,10 +26,12 @@ public class Furniture : IXmlSerializable
 	int width;
 	int height;
 	Func<Tile, bool> funcPositionValidation;
+	List<Job> jobs;
 
 	public Furniture ()
 	{
 		furnitureParameters = new Dictionary<string, float> ();
+		jobs = new List<Job> ();
 	}
 
 	public Furniture (string _furnitureType, float _movementCostMultiplier = 1f, int _width = 1, int _height = 1, bool _linksToNeighboors = false, bool _roomEnclosure = false)
@@ -58,6 +60,7 @@ public class Furniture : IXmlSerializable
 		height = other.height;
 		linksToNeighboors = other.linksToNeighboors;
 		isAccessible = other.isAccessible;
+		jobs = new List<Job> ();
 	}
 
 	public static Furniture PlaceInstance (Furniture prototype, Tile tile)
@@ -198,5 +201,31 @@ public class Furniture : IXmlSerializable
 	public void UnregisterUpdateAction (Action<Furniture,float> action)
 	{
 		updateActions -= action;
+	}
+
+	public int JobCount ()
+	{
+		return jobs.Count;
+	}
+
+	public void AddJob (Job job)
+	{
+		jobs.Add (job);
+		tile.World.jobQueue.Enqueue (job);
+	}
+
+	public void RemoveJob (Job job)
+	{
+		jobs.Remove (job);
+		job.CancelJob ();
+		//tile.World.jobQueue.Remove (job);
+	}
+
+	public void ClearJobs ()
+	{
+		foreach (var job in jobs) {
+			RemoveJob (job);
+			//tile.World.jobQueue.Remove (job);
+		}
 	}
 }
