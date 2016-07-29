@@ -11,6 +11,8 @@ public class Job
 
 	public float jobTime{ get; protected set; }
 
+	public bool canTakeFromStockpile = true;
+
 	Action<Job> jobCompleteCallback;
 	Action<Job> jobCancelCallback;
 	Action<Job> jobWorkedCallback;
@@ -83,7 +85,15 @@ public class Job
 
 	public void doWork (float workTime)
 	{
-		//Debug.Log (jobTime + " , " + workTime);
+		if (!HasAllMaterials ()) {
+			//Debug.LogError ("doWork - tried to do a job that doesn't have all the material");
+			if (jobWorkedCallback != null) {
+				jobWorkedCallback (this);
+			}
+
+			return;
+		}
+
 		jobTime -= workTime;
 		if (jobWorkedCallback != null) {
 			jobWorkedCallback (this);

@@ -51,7 +51,7 @@ public class JobQueue
 		List<Job> jobs = new List<Job> (jobQueue);
 
 		if (!jobs.Contains (job)) {
-			Debug.LogError ("Trying to remove a job doesn't exist on the queue");
+			//Debug.LogError ("Trying to remove a job doesn't exist on the queue");
 			return;
 		}
 

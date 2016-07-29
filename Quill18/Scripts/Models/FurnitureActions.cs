@@ -49,42 +49,44 @@ public static class FurnitureActions
 	{
 		Inventory furnitureInventory = furniture.tile.inventory;
 
+		if (furnitureInventory != null && furnitureInventory.stackSize >= furnitureInventory.maxStackSize) {
+			furniture.ClearJobs ();
+			return;
+		}
+
+		if (furniture.JobCount () > 0) {
+			return;
+		}
+
+		if (furnitureInventory != null && furnitureInventory.stackSize == 0) {
+			Debug.LogError ("Stockpile_UpdateAction - has a zero sized stack");
+			furniture.ClearJobs ();
+			return;
+		}
+
+		Inventory[] itemsDesired;
+
 		if (furnitureInventory == null) {
-			if (furniture.JobCount () > 0) {
-				return;
-			}
+			itemsDesired = Stockpile_GetItemsFromFilter ();
 
-			Job job = new Job (
-				          furniture.tile,
-				          null,
-				          null,
-				          0f,
-				          new Inventory[] { new Inventory ("Steel Plate", 50, 0) }
-			          );
-
-			job.registerJobWorkedCallback (Stockpile_JobWorked);
-			furniture.AddJob (job);
-
-		} else if (furnitureInventory.stackSize < furnitureInventory.maxStackSize) {
-			if (furniture.JobCount () > 0) {
-				return;
-			}
-
+		} else {
 			Inventory desired = furnitureInventory.Clone ();
 			desired.maxStackSize -= desired.stackSize;
 			desired.stackSize = 0;
-
-			Job job = new Job (
-				          furniture.tile,
-				          null,
-				          null,
-				          0f,
-				          new Inventory[] { desired }
-			          );
-
-			job.registerJobWorkedCallback (Stockpile_JobWorked);
-			furniture.AddJob (job);
+			itemsDesired = new Inventory[]{ desired };
 		}
+
+		Job job = new Job (
+			          furniture.tile,
+			          null,
+			          null,
+			          0f,
+			          itemsDesired
+		          );
+
+		job.canTakeFromStockpile = false;
+		job.registerJobWorkedCallback (Stockpile_JobWorked);
+		furniture.AddJob (job);
 	}
 
 	static void Stockpile_JobWorked (Job job)
@@ -97,5 +99,10 @@ public static class FurnitureActions
 				return;
 			}
 		}
+	}
+
+	public static Inventory[] Stockpile_GetItemsFromFilter ()
+	{
+		return new Inventory[] { new Inventory ("Steel Plate", 50, 0) };
 	}
 }
