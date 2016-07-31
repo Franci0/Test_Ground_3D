@@ -24,7 +24,7 @@ public class JobSpriteController : MonoBehaviour
 		}
 
 		if (jobGameObjectMap.ContainsKey (job)) {
-			Debug.LogError ("onJobCreated -- job_go already exists -- job re-enqueued?");
+			//Debug.LogError ("onJobCreated -- job_go already exists -- job re-enqueued?");
 			return;
 		}
 

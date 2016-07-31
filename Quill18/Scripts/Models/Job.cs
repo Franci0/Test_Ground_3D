@@ -95,6 +95,7 @@ public class Job
 		}
 
 		jobTime -= workTime;
+
 		if (jobWorkedCallback != null) {
 			jobWorkedCallback (this);
 		}

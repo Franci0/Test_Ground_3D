@@ -83,8 +83,11 @@ public class Character : IXmlSerializable
 	}
 
 
-	public void onJobEnded (Job job)
+	public void OnJobEnded (Job job)
 	{
+		job.unregisterJobCancelCallback (OnJobEnded);
+		job.unregisterJobCompleteCallback (OnJobEnded);
+
 		if (job != myJob) {
 			Debug.LogError ("onJobEnded -- different job to end than what's his current job");
 			return;
@@ -153,7 +156,10 @@ public class Character : IXmlSerializable
 					}
 
 				} else {
-					if (currentTile.inventory != null && myJob.DesiresInventoryType (currentTile.inventory) > 0) {
+					if (currentTile.inventory != null &&
+					    (myJob.canTakeFromStockpile || currentTile.furniture == null || !currentTile.furniture.IsStockpile ()) &&
+					    myJob.DesiresInventoryType (currentTile.inventory) > 0) {
+
 						currentTile.World.inventoryManager.PlaceInventory (
 							this, 
 							currentTile.inventory, 
@@ -167,10 +173,11 @@ public class Character : IXmlSerializable
 							Inventory supplier = currentTile.World.inventoryManager.GetClosestInventoryOfType (
 								                     desired.inventoryType, 
 								                     currentTile, 
-								                     desired.maxStackSize - desired.stackSize);
+								                     desired.maxStackSize - desired.stackSize,
+								                     myJob.canTakeFromStockpile);
 
 							if (supplier == null) {
-								Debug.Log ("UpdateDoJob - No tile contains inventory of type " + desired.inventoryType + " to satisfy job requirements");
+								//Debug.Log ("UpdateDoJob - No tile contains inventory of type " + desired.inventoryType + " to satisfy job requirements");
 								AbbandonJob ();
 								return;
 							}
@@ -251,8 +258,8 @@ public class Character : IXmlSerializable
 		}
 
 		destinationTile = myJob.Tile;
-		myJob.registerJobCompleteCallback (onJobEnded);
-		myJob.registerJobCancelCallback (onJobEnded);
+		myJob.registerJobCompleteCallback (OnJobEnded);
+		myJob.registerJobCancelCallback (OnJobEnded);
 		pathAStar = new Path_AStar (currentTile.World, currentTile, destinationTile);
 
 		if (pathAStar.count () == 0) {

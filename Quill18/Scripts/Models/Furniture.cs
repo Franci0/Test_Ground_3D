@@ -20,6 +20,8 @@ public class Furniture : IXmlSerializable
 	public Func<Furniture,Accessiblity> isAccessible;
 	public Action<Furniture> onChangedCallback;
 
+	public Color tint = Color.white;
+
 	protected Dictionary<string,float> furnitureParameters;
 	protected Action<Furniture,float> updateActions;
 
@@ -58,6 +60,7 @@ public class Furniture : IXmlSerializable
 		roomEnclosure = other.roomEnclosure;
 		width = other.width;
 		height = other.height;
+		tint = other.tint;
 		linksToNeighboors = other.linksToNeighboors;
 		isAccessible = other.isAccessible;
 		jobs = new List<Job> ();
@@ -227,5 +230,10 @@ public class Furniture : IXmlSerializable
 			RemoveJob (job);
 			//tile.World.jobQueue.Remove (job);
 		}
+	}
+
+	public bool IsStockpile ()
+	{
+		return furnitureType == "Stockpile";
 	}
 }

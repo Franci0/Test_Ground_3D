@@ -39,7 +39,11 @@ public class FurnitureSpriteController : MonoBehaviour
 			return furnitureSprites [spriteName];
 		}
 
-		spriteName += "s0_";
+		if (spriteName == "Wall") {
+			spriteName += "s0";
+		}
+
+		spriteName += "_";
 
 		int x = furniture.tile.X;
 		int y = furniture.tile.Y;
@@ -150,6 +154,7 @@ public class FurnitureSpriteController : MonoBehaviour
 		SpriteRenderer sr = furniture_go.AddComponent<SpriteRenderer> ();
 		sr.sprite = getSpriteForFurniture (furniture);
 		sr.sortingLayerName = "Furnitures";
+		sr.color = furniture.tint;
 
 		//Debug.Log (furniture_go.GetComponent<SpriteRenderer> ().sprite);
 
@@ -176,6 +181,7 @@ public class FurnitureSpriteController : MonoBehaviour
 
 		sr.sprite = getSpriteForFurniture (furniture);
 		sr.sortingLayerName = "Furnitures";
+		sr.color = furniture.tint;
 
 	}
 

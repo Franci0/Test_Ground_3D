@@ -109,7 +109,7 @@ public class World : IXmlSerializable
 		}
 
 		//Debug Inventory - to remove
-		Inventory inventory = new Inventory ("Steel Plate", 50, 2);
+		Inventory inventory = new Inventory ("Steel Plate", 50, 20);
 		Tile inventoryTile = getTileAt (Width / 2, Height / 2);
 		inventoryManager.PlaceInventory (inventoryTile, inventory);
 
@@ -302,6 +302,13 @@ public class World : IXmlSerializable
 		invalidateTileGraph ();
 	}
 
+	public void OnInventoryCreated (Inventory inventory)
+	{
+		if (inventoryCreatedCallback != null) {
+			inventoryCreatedCallback (inventory);
+		}
+	}
+
 	void CreateFurniturePrototypes ()
 	{
 		furniturePrototypes = new Dictionary<string, Furniture> ();
@@ -360,7 +367,7 @@ public class World : IXmlSerializable
 				1, 
 				1, 
 				1, 
-				false, 
+				true, 
 				false
 			)
 		);
@@ -377,6 +384,7 @@ public class World : IXmlSerializable
 		);
 
 		furniturePrototypes ["Stockpile"].RegisterUpdateAction (FurnitureActions.Stockpile_UpdateAction);
+		furniturePrototypes ["Stockpile"].tint = new Color32 (186, 31, 31, 255);
 
 	}
 

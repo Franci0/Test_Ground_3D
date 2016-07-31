@@ -27,6 +27,7 @@ public class InventoryManager
 			}
 
 			inventories [tile.inventory.inventoryType].Add (tile.inventory);
+			tile.World.OnInventoryCreated (tile.inventory);
 		}
 
 		return true;
@@ -53,7 +54,7 @@ public class InventoryManager
 		return true;
 	}
 
-	public Inventory GetClosestInventoryOfType (string inventoryType, Tile tile, int desiredAmount)
+	public Inventory GetClosestInventoryOfType (string inventoryType, Tile tile, int desiredAmount, bool canTakeFromStockpile)
 	{
 		if (!inventories.ContainsKey (inventoryType)) {
 			Debug.LogError ("GetClosestInventoryOfType - No items of desired type");
@@ -61,7 +62,7 @@ public class InventoryManager
 		}
 
 		foreach (Inventory inventory in inventories[inventoryType]) {
-			if (inventory.tile != null) {
+			if (inventory.tile != null && (canTakeFromStockpile || inventory.tile.furniture == null || !inventory.tile.furniture.IsStockpile ())) {
 				return inventory;
 			}
 		}
