@@ -88,18 +88,22 @@ public class Tile : IXmlSerializable
 
 	public bool placeFurniture (Furniture furnitureInstance)
 	{
-		
-		/*if (furnitureInstance == null) {
-			furniture = null;
-			return true;
-		}*/
+		if (furnitureInstance == null) {
+			return UninstallFurniture ();
+		}
 
-		if (furniture != null) {
-			//Debug.LogError ("There is already an InstalledObject: " + installedObject.ObjectType);
+		if (!furnitureInstance.isValidPosition (this)) {
+			Debug.LogError ("placeFurniture - Trying to assing a furniture to a uneligible one");
 			return false;
 		}
 
-		furniture = furnitureInstance;
+		for (int x_off = X; x_off < (X + furnitureInstance.width); x_off++) {
+			for (int y_off = Y; y_off < (Y + furnitureInstance.height); y_off++) {
+				Tile tile = World.getTileAt (x_off, y_off);
+				tile.furniture = furnitureInstance;
+			}
+		}
+
 		return true;
 	}
 
@@ -219,6 +223,12 @@ public class Tile : IXmlSerializable
 		inventory = inv.Clone ();
 		inventory.tile = this;
 		inv.stackSize = 0;
+		return true;
+	}
+
+	public bool UninstallFurniture ()
+	{
+		furniture = null;
 		return true;
 	}
 

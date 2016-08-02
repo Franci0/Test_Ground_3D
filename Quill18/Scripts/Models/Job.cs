@@ -7,11 +7,13 @@ public class Job
 	public string jobObjectType{ get; protected set; }
 
 	public Dictionary<string, Inventory> inventoryRequirements;
-	public Tile Tile;
+	public Tile tile;
 
 	public float jobTime{ get; protected set; }
 
 	public bool canTakeFromStockpile = true;
+
+	public Furniture furniturePrototype;
 
 	Action<Job> jobCompleteCallback;
 	Action<Job> jobCancelCallback;
@@ -21,7 +23,7 @@ public class Job
 
 	public Job (Tile _tile, Action<Job> _jobCompleteCallback, string _jobObjectType, float _jobTime, Inventory[] _inventoryRequirements)
 	{
-		Tile = _tile;
+		tile = _tile;
 		jobTime = _jobTime;
 		jobCompleteCallback += _jobCompleteCallback;
 		jobObjectType = _jobObjectType;
@@ -39,7 +41,7 @@ public class Job
 
 	protected Job (Job other)
 	{
-		Tile = other.Tile;
+		tile = other.tile;
 		jobTime = other.jobTime;
 		jobCompleteCallback = other.jobCompleteCallback;
 		jobObjectType = other.jobObjectType;
@@ -111,7 +113,7 @@ public class Job
 			jobCancelCallback (this);
 		}
 
-		Tile.World.jobQueue.Remove (this);
+		tile.World.jobQueue.Remove (this);
 	}
 
 	public virtual Job Clone ()

@@ -59,12 +59,14 @@ public class BuildModeController : MonoBehaviour
 					job = new Job (tile, FurnitureActions.JobCompleteFurnitureBuilding, furnitureType, 0.1f, null);
 				}
 
-				job.Tile = tile;
+				job.furniturePrototype =	WorldController.Instance.world.getFurniturePrototype (furnitureType);
+
+				job.tile = tile;
 
 				tile.pendingFurnitureJob = job;
 
 				job.registerJobCancelCallback ((theJob) => {
-					theJob.Tile.pendingFurnitureJob = null;
+					theJob.tile.pendingFurnitureJob = null;
 				});
 
 				WorldController.Instance.world.jobQueue.Enqueue (job);

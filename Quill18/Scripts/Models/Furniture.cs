@@ -17,6 +17,10 @@ public class Furniture : IXmlSerializable
 
 	public bool roomEnclosure{ get; protected set ; }
 
+	public int width{ get; protected set ; }
+
+	public int height{ get; protected set ; }
+
 	public Func<Furniture,Accessiblity> isAccessible;
 	public Action<Furniture> onChangedCallback;
 
@@ -24,9 +28,6 @@ public class Furniture : IXmlSerializable
 
 	protected Dictionary<string,float> furnitureParameters;
 	protected Action<Furniture,float> updateActions;
-
-	int width;
-	int height;
 	Func<Tile, bool> funcPositionValidation;
 	List<Job> jobs;
 
@@ -52,6 +53,10 @@ public class Furniture : IXmlSerializable
 	{
 		if (other.updateActions != null) {
 			updateActions = (Action<Furniture,float>)other.updateActions.Clone ();
+		}
+
+		if (other.funcPositionValidation != null) {
+			funcPositionValidation = (Func<Tile, bool>)other.funcPositionValidation.Clone ();
 		}
 
 		furnitureParameters = new Dictionary<string, float> (other.furnitureParameters);
@@ -158,12 +163,18 @@ public class Furniture : IXmlSerializable
 
 	public bool DEFAULT__isValidPosition (Tile tile)
 	{
-		if (tile.Type != TileType.Floor) {
-			return false;
-		}
+		for (int x = tile.X; x < (tile.X + width); x++) {
+			for (int y = tile.Y; y < (tile.Y + height); y++) {
+				Tile temp = tile.World.getTileAt (x, y);
 
-		if (tile.furniture != null) {
-			return false;
+				if (temp.Type != TileType.Floor) {
+					return false;
+				}
+
+				if (temp.furniture != null) {
+					return false;
+				}
+			}
 		}
 
 		return true;

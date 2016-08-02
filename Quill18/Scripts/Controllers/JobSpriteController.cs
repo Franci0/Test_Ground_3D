@@ -32,8 +32,8 @@ public class JobSpriteController : MonoBehaviour
 
 		jobGameObjectMap.Add (job, job_go);
 
-		job_go.name = "JOB_" + job.jobObjectType + "_" + job.Tile.X + "_" + job.Tile.Y;
-		job_go.transform.position = new Vector3 (job.Tile.X, job.Tile.Y, 0);
+		job_go.name = "JOB_" + job.jobObjectType + "_" + job.tile.X + "_" + job.tile.Y;
+		job_go.transform.position = new Vector3 (job.tile.X + ((job.furniturePrototype.width - 1) / 2f), job.tile.Y + ((job.furniturePrototype.height - 1) / 2f), 0);
 		job_go.transform.SetParent (this.transform, true);
 
 		SpriteRenderer sr = job_go.AddComponent<SpriteRenderer> ();
@@ -42,8 +42,8 @@ public class JobSpriteController : MonoBehaviour
 		sr.color = new Color (0.5f, 1f, 0.5f, 0.25f);
 
 		if (job.jobObjectType == "Door") {
-			Tile westTile = job.Tile.World.getTileAt (job.Tile.X - 1, job.Tile.Y);
-			Tile eastTile = job.Tile.World.getTileAt (job.Tile.X + 1, job.Tile.Y);
+			Tile westTile = job.tile.World.getTileAt (job.tile.X - 1, job.tile.Y);
+			Tile eastTile = job.tile.World.getTileAt (job.tile.X + 1, job.tile.Y);
 
 			if (westTile != null && eastTile != null && westTile.furniture != null && eastTile.furniture != null && westTile.furniture.furnitureType == "Wall" && eastTile.furniture.furnitureType == "Wall") {
 				job_go.transform.rotation = Quaternion.Euler (0, 0, 90);

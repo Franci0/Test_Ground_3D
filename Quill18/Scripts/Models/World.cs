@@ -386,6 +386,17 @@ public class World : IXmlSerializable
 		furniturePrototypes ["Stockpile"].RegisterUpdateAction (FurnitureActions.Stockpile_UpdateAction);
 		furniturePrototypes ["Stockpile"].tint = new Color32 (186, 31, 31, 255);
 
+		furniturePrototypes.Add (
+			"Oxygen Generator", 
+			new Furniture (
+				"Oxygen Generator", 
+				10, 
+				2, 
+				2, 
+				false, 
+				false
+			)
+		);
 	}
 
 	void SetupWorld (int width, int height)

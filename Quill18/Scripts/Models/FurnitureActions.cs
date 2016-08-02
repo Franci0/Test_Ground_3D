@@ -41,8 +41,8 @@ public static class FurnitureActions
 
 	public static void JobCompleteFurnitureBuilding (Job job)
 	{
-		WorldController.Instance.world.PlaceFurniture (job.jobObjectType, job.Tile);
-		job.Tile.pendingFurnitureJob = null;
+		WorldController.Instance.world.PlaceFurniture (job.jobObjectType, job.tile);
+		job.tile.pendingFurnitureJob = null;
 	}
 
 	public static void Stockpile_UpdateAction (Furniture furniture, float deltaTime)
@@ -91,11 +91,11 @@ public static class FurnitureActions
 
 	static void Stockpile_JobWorked (Job job)
 	{
-		job.Tile.furniture.RemoveJob (job);
+		job.tile.furniture.RemoveJob (job);
 
 		foreach (Inventory inventory in job.inventoryRequirements.Values) {
 			if (inventory.stackSize > 0) {
-				job.Tile.World.inventoryManager.PlaceInventory (job.Tile, inventory);
+				job.tile.World.inventoryManager.PlaceInventory (job.tile, inventory);
 				return;
 			}
 		}

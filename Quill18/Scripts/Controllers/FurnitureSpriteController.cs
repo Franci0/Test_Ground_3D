@@ -139,7 +139,7 @@ public class FurnitureSpriteController : MonoBehaviour
 		furnitureGameObjectMap.Add (furniture, furniture_go);
 
 		furniture_go.name = furniture.furnitureType + "_" + furniture.tile.X + "_" + furniture.tile.Y;
-		furniture_go.transform.position = new Vector3 (furniture.tile.X, furniture.tile.Y, 0);
+		furniture_go.transform.position = new Vector3 (furniture.tile.X + ((furniture.width - 1) / 2f), furniture.tile.Y + ((furniture.height - 1) / 2f), 0);
 		furniture_go.transform.SetParent (this.transform, true);
 
 		if (furniture.furnitureType == "Door") {

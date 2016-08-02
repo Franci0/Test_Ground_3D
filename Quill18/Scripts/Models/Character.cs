@@ -130,7 +130,7 @@ public class Character : IXmlSerializable
 			if (!myJob.HasAllMaterials ()) {
 				if (inventory != null) {
 					if (myJob.DesiresInventoryType (inventory) > 0) {
-						if (currentTile == myJob.Tile) {
+						if (currentTile == myJob.tile) {
 							currentTile.World.inventoryManager.PlaceInventory (myJob, inventory);
 							myJob.doWork (0f);
 
@@ -143,7 +143,7 @@ public class Character : IXmlSerializable
 							}
 
 						} else {
-							destinationTile = myJob.Tile;
+							destinationTile = myJob.tile;
 						}
 
 						return;
@@ -190,9 +190,9 @@ public class Character : IXmlSerializable
 				return;
 			}
 
-			destinationTile = myJob.Tile;
+			destinationTile = myJob.tile;
 
-			if (/*myJob != null &&*/ currentTile == myJob.Tile) {
+			if (/*myJob != null &&*/ currentTile == myJob.tile) {
 				myJob.doWork (deltaTime);
 			}
 		}
@@ -257,7 +257,7 @@ public class Character : IXmlSerializable
 			return;
 		}
 
-		destinationTile = myJob.Tile;
+		destinationTile = myJob.tile;
 		myJob.registerJobCompleteCallback (OnJobEnded);
 		myJob.registerJobCancelCallback (OnJobEnded);
 		pathAStar = new Path_AStar (currentTile.World, currentTile, destinationTile);
