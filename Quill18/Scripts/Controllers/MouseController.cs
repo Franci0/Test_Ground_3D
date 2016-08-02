@@ -30,6 +30,8 @@ public class MouseController : MonoBehaviour
 
 	List<GameObject> dragCursors;
 
+	BuildModeController buildModeController;
+
 	public Vector3 GetMousePosition ()
 	{
 		return currFramePosition;
@@ -43,6 +45,7 @@ public class MouseController : MonoBehaviour
 	void Start ()
 	{
 		dragCursors = new List<GameObject> ();
+		buildModeController = GameObject.FindObjectOfType<BuildModeController> ();
 	}
 
 	void Update ()
@@ -81,6 +84,10 @@ public class MouseController : MonoBehaviour
 			dragStartPosition = currFramePosition;
 		}
 
+		if (!buildModeController.IsObjectDraggable ()) {
+			dragStartPosition = currFramePosition;
+		}
+
 		while (dragCursors.Count > 0) {
 			go = dragCursors [0];
 			dragCursors.RemoveAt (0);
@@ -105,13 +112,11 @@ public class MouseController : MonoBehaviour
 		if (Input.GetMouseButtonUp (0)) {
 			calculateAreaDrag ();
 
-			BuildModeController bmc = GameObject.FindObjectOfType<BuildModeController> ();
-
 			for (int x = start_x; x <= end_x; x++) {
 				for (int y = start_y; y <= end_y; y++) {
 					tile = WorldController.Instance.world.getTileAt (x, y);
 					if (tile != null) {
-						bmc.doBuild (tile);
+						buildModeController.doBuild (tile);
 					}
 				}
 			}

@@ -111,6 +111,10 @@ public class FurnitureSpriteController : MonoBehaviour
 			return furnitureSprites [objectType + "s0_"];
 		}
 
+		if (furnitureSprites.ContainsKey (objectType + "_")) {
+			return furnitureSprites [objectType + "_"];
+		}
+
 		Debug.LogError ("getSpriteForFurniture -- No sprite with name: " + objectType);
 		return null;
 	}
@@ -189,29 +193,10 @@ public class FurnitureSpriteController : MonoBehaviour
 	{
 		furnitureSprites = new Dictionary<string, Sprite> ();
 
-		/*Sprite[] wallSprites = Resources.LoadAll<Sprite> ("Sprites/Furniture/Wall");
-
-		foreach (Sprite s in wallSprites) {
-			furnitureSprites [s.name] = s;
-		}
-
-		Sprite[] doorSprites = Resources.LoadAll<Sprite> ("Sprites/Furniture/Door");
-
-		foreach (Sprite s in doorSprites) {
-			furnitureSprites [s.name] = s;
-			//Debug.Log (s.name);
-		}
-
-		Sprite[] stockpileSprites = Resources.LoadAll<Sprite> ("Sprites/Furniture/Stockpile");
-
-		foreach (Sprite s in stockpileSprites) {
-			furnitureSprites [s.name] = s;
-			Debug.Log (s.name);
-		}*/
-
 		Sprite[] sprites = Resources.LoadAll<Sprite> ("Sprites/Furniture");
 
 		foreach (Sprite sprite in sprites) {
+			//Debug.Log (sprite.name);
 			furnitureSprites [sprite.name] = sprite;
 		}
 

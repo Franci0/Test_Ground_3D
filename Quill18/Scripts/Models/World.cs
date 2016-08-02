@@ -390,7 +390,7 @@ public class World : IXmlSerializable
 			"Oxygen Generator", 
 			new Furniture (
 				"Oxygen Generator", 
-				10, 
+				5, 
 				2, 
 				2, 
 				false, 
