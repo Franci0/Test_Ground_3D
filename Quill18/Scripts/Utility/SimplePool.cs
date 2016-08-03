@@ -83,7 +83,7 @@ public class SimplePool
 	{
 		PoolMember pm = go.GetComponent<PoolMember> ();
 		if (pm == null) {
-			Debug.Log ("Object '" + go.name + "' wasn't spawned from a pool. Destroying it instead");
+			//Debug.Log ("Object '" + go.name + "' wasn't spawned from a pool. Destroying it instead");
 			GameObject.Destroy (go);
 		} else {
 			pm.myPool.despawn (go);

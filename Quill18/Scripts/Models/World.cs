@@ -61,7 +61,7 @@ public class World : IXmlSerializable
 		writer.WriteStartElement ("Tiles");
 		for (int x = 0; x < Width; x++) {
 			for (int y = 0; y < Height; y++) {
-				if (tiles [x, y].Type != TileType.Empty) {
+				if (tiles [x, y].Type != TileType.EMPTY) {
 					writer.WriteStartElement ("Tile");
 					tiles [x, y].WriteXml (writer);
 					writer.WriteEndElement ();
@@ -140,9 +140,9 @@ public class World : IXmlSerializable
 		for (int x = 0; x < Width; x++) {
 			for (int y = 0; y < Height; y++) {
 				if (UnityEngine.Random.Range (0, 2) == 0) {
-					tiles [x, y].Type = TileType.Empty;
+					tiles [x, y].Type = TileType.EMPTY;
 				} else {
-					tiles [x, y].Type = TileType.Floor;
+					tiles [x, y].Type = TileType.FLOOR;
 				}
 			}
 		}

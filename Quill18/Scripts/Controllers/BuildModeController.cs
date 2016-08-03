@@ -5,33 +5,38 @@ using System;
 
 public class BuildModeController : MonoBehaviour
 {
-	TileType buildModeTile = TileType.Floor;
-	bool buildModeIsObject = false;
+	public bool buildModeIsObject = false;
+	public string objectType;
+	TileType buildModeTile = TileType.FLOOR;
 	bool devActive = false;
-	string objectType;
-	GameObject furniturePreview;
-	FurnitureSpriteController furnitureSpriteController;
 	MouseController mouseController;
+
+	/*GameObject furniturePreview;
+	FurnitureSpriteController furnitureSpriteController;*/
+	//MouseController mouseController;
 
 	public void setMode_BuildFurniture (string furnitureType)
 	{
 		buildModeIsObject = true;
 		devActive = false;
 		objectType = furnitureType;
+		mouseController.StartBuildMode ();
 	}
 
 	public void setMode_BuildFloor ()
 	{
 		buildModeIsObject = false;
 		devActive = false;
-		buildModeTile = TileType.Floor;
+		buildModeTile = TileType.FLOOR;
+		mouseController.StartBuildMode ();
 	}
 
 	public void setMode_Bulldoze ()
 	{
 		buildModeIsObject = false;
 		devActive = false;
-		buildModeTile = TileType.Empty;
+		buildModeTile = TileType.EMPTY;
+		mouseController.StartBuildMode ();
 	}
 
 	public void doBuild (Tile tile)
@@ -85,6 +90,7 @@ public class BuildModeController : MonoBehaviour
 		buildModeIsObject = true;
 		devActive = true;
 		objectType = furnitureType;
+		mouseController.StartBuildMode ();
 	}
 
 	public bool IsObjectDraggable ()
@@ -99,22 +105,20 @@ public class BuildModeController : MonoBehaviour
 
 	void Start ()
 	{
-		furnitureSpriteController = GameObject.FindObjectOfType<FurnitureSpriteController> ();
-		mouseController = GameObject.FindObjectOfType<MouseController> ();
-		furniturePreview = new GameObject ();
-		furniturePreview.transform.SetParent (this.transform);
-		furniturePreview.AddComponent<SpriteRenderer> ().sortingLayerName = "Jobs";
-		furniturePreview.SetActive (false);
+		mouseController = FindObjectOfType<MouseController> ();
 	}
 
-	void Update ()
+	/*void Update ()
 	{
 		if (buildModeIsObject && objectType != null && objectType != "") {
 			ShowFurnitureSpriteAtTile (objectType, mouseController.GetMouseOverTile ());
+		
+		} else {
+			furniturePreview.SetActive (false);
 		}
-	}
+	}*/
 
-	void ShowFurnitureSpriteAtTile (string furnitureType, Tile tile)
+	/*void ShowFurnitureSpriteAtTile (string furnitureType, Tile tile)
 	{
 		furniturePreview.SetActive (true);
 		SpriteRenderer sr = furniturePreview.GetComponent<SpriteRenderer> ();
@@ -128,7 +132,7 @@ public class BuildModeController : MonoBehaviour
 
 		Furniture furniturePrototype = tile.World.getFurniturePrototype (furnitureType);
 		furniturePreview.transform.position = new Vector3 (tile.X + ((furniturePrototype.width - 1) / 2f), tile.Y + ((furniturePrototype.height - 1) / 2f), 0);
-	}
+	}*/
 
 
 }

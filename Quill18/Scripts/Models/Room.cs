@@ -31,7 +31,7 @@ public class Room
 
 	protected static void ActualFlooFill (Tile tile, Room oldRoom)
 	{
-		if (tile == null || tile.room != oldRoom || (tile.furniture != null && tile.furniture.roomEnclosure) || tile.Type == TileType.Empty) {
+		if (tile == null || tile.room != oldRoom || (tile.furniture != null && tile.furniture.roomEnclosure) || tile.Type == TileType.EMPTY) {
 			return;
 		}
 
@@ -48,7 +48,7 @@ public class Room
 				Tile[] ns = t.getNeighboors ();
 
 				foreach (var t2 in ns) {
-					if (t2 == null || t2.Type == TileType.Empty) {
+					if (t2 == null || t2.Type == TileType.EMPTY) {
 						newRoom.UnAssignAllTiles ();
 						return;
 					}

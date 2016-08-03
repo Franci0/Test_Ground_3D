@@ -6,15 +6,15 @@ using System.Xml.Serialization;
 
 public enum TileType
 {
-	Empty,
-	Floor
+	EMPTY,
+	FLOOR
 }
 
 public enum Accessiblity
 {
-	Yes,
-	Never,
-	Soon
+	YES,
+	NEVER,
+	SOON
 }
 
 public class Tile : IXmlSerializable
@@ -46,7 +46,7 @@ public class Tile : IXmlSerializable
 
 	public float movementCost {
 		get {
-			if (type == TileType.Empty) {
+			if (type == TileType.EMPTY) {
 				return 0;
 			}
 			if (furniture == null) {
@@ -61,7 +61,7 @@ public class Tile : IXmlSerializable
 
 	Action<Tile> tileChangedCallback;
 	TileType old;
-	TileType type = TileType.Empty;
+	TileType type = TileType.EMPTY;
 
 	public Tile ()
 	{
@@ -171,13 +171,13 @@ public class Tile : IXmlSerializable
 	public Accessiblity isAccessible ()
 	{
 		if (movementCost == 0) {
-			return Accessiblity.Never;
+			return Accessiblity.NEVER;
 		}
 		if (furniture != null && furniture.isAccessible != null) {
 			return furniture.isAccessible (furniture);
 		}
 
-		return Accessiblity.Yes;
+		return Accessiblity.YES;
 	}
 
 	public Tile North ()

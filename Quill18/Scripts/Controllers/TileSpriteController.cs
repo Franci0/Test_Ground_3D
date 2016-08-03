@@ -68,9 +68,9 @@ public class TileSpriteController : MonoBehaviour
 			return;
 		}
 
-		if (tile_data.Type == TileType.Floor)
+		if (tile_data.Type == TileType.FLOOR)
 			tile_go.GetComponent<SpriteRenderer> ().sprite = floorSprite;
-		else if (tile_data.Type == TileType.Empty)
+		else if (tile_data.Type == TileType.EMPTY)
 			tile_go.GetComponent<SpriteRenderer> ().sprite = emptySprite;
 		else
 			Debug.LogError ("OnTileTypeChanged - Unkown TileType");

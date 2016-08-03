@@ -229,12 +229,12 @@ public class Character : IXmlSerializable
 
 		float distanceToTravel = Mathf.Sqrt (Mathf.Pow (currentTile.X - nextTile.X, 2) + Mathf.Pow (currentTile.Y - nextTile.Y, 2));
 
-		if (nextTile.isAccessible () == Accessiblity.Never) {
+		if (nextTile.isAccessible () == Accessiblity.NEVER) {
 			Debug.LogError ("Charcter tried to enter in unwalkable tile");
 			nextTile = null;
 			pathAStar = null;
 			return;
-		} else if (nextTile.isAccessible () == Accessiblity.Soon) {
+		} else if (nextTile.isAccessible () == Accessiblity.SOON) {
 			return;
 		}
 

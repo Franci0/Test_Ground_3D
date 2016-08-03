@@ -167,7 +167,7 @@ public class Furniture : IXmlSerializable
 			for (int y = tile.Y; y < (tile.Y + height); y++) {
 				Tile temp = tile.World.getTileAt (x, y);
 
-				if (temp.Type != TileType.Floor) {
+				if (temp.Type != TileType.FLOOR) {
 					return false;
 				}
 

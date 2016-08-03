@@ -33,9 +33,9 @@ public static class FurnitureActions
 		furniture.SetParameter (World.is_opening, 1);
 
 		if (furniture.GetParameter (World.openness) >= 1) {
-			return Accessiblity.Yes;
+			return Accessiblity.YES;
 		} else {
-			return Accessiblity.Soon;
+			return Accessiblity.SOON;
 		}
 	}
 
