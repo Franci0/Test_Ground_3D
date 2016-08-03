@@ -397,6 +397,8 @@ public class World : IXmlSerializable
 				false
 			)
 		);
+
+		furniturePrototypes ["Oxygen Generator"].RegisterUpdateAction (FurnitureActions.OxygenGenerator_UpdateAction);
 	}
 
 	void SetupWorld (int width, int height)
@@ -408,7 +410,7 @@ public class World : IXmlSerializable
 		tiles = new Tile[width, height];
 
 		rooms = new List<Room> ();
-		rooms.Add (new Room ());
+		rooms.Add (new Room (this));
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {

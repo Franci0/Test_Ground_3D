@@ -6,8 +6,6 @@ public static class FurnitureActions
 {
 	public static void Door_UpdateAction (Furniture furniture, float deltaTime)
 	{
-		//Debug.Log ("Door_UpdateAction: " + furniture.furnitureParameters ["openess"]);
-
 		if (furniture.GetParameter (World.is_opening) >= 1) {
 			furniture.ChangeParameter (World.openness, deltaTime * 4);
 
@@ -29,7 +27,6 @@ public static class FurnitureActions
 
 	public static Accessiblity Door_IsAccessible (Furniture furniture)
 	{
-		//Debug.Log ("Door_IsAccessible: " + furniture.furnitureParameters ["is_opening"]);
 		furniture.SetParameter (World.is_opening, 1);
 
 		if (furniture.GetParameter (World.openness) >= 1) {
@@ -104,5 +101,12 @@ public static class FurnitureActions
 	public static Inventory[] Stockpile_GetItemsFromFilter ()
 	{
 		return new Inventory[] { new Inventory ("Steel Plate", 50, 0) };
+	}
+
+	public static void OxygenGenerator_UpdateAction (Furniture furniture, float deltaTime)
+	{
+		if (furniture.tile.room.GetGasAmount ("O2") < 0.20f) {
+			furniture.tile.room.ChangeGas ("O2", 0.01f * deltaTime);
+		}
 	}
 }
