@@ -100,7 +100,7 @@ public class Character : IXmlSerializable
 	public void AbbandonJob ()
 	{
 		nextTile = destinationTile = currentTile;
-		currentTile.World.jobQueue.Enqueue (myJob);
+		currentTile.world.jobQueue.Enqueue (myJob);
 		myJob = null;
 	}
 
@@ -131,7 +131,7 @@ public class Character : IXmlSerializable
 				if (inventory != null) {
 					if (myJob.DesiresInventoryType (inventory) > 0) {
 						if (currentTile == myJob.tile) {
-							currentTile.World.inventoryManager.PlaceInventory (myJob, inventory);
+							currentTile.world.inventoryManager.PlaceInventory (myJob, inventory);
 							myJob.doWork (0f);
 
 							if (inventory.stackSize == 0) {
@@ -149,7 +149,7 @@ public class Character : IXmlSerializable
 						return;
 
 					} else {
-						if (!currentTile.World.inventoryManager.PlaceInventory (currentTile, inventory)) {
+						if (!currentTile.world.inventoryManager.PlaceInventory (currentTile, inventory)) {
 							Debug.LogError ("UpdateDoJob - character tried to dump inventory to invalid tile");
 							inventory = null;
 						}
@@ -160,7 +160,7 @@ public class Character : IXmlSerializable
 					    (myJob.canTakeFromStockpile || currentTile.furniture == null || !currentTile.furniture.IsStockpile ()) &&
 					    myJob.DesiresInventoryType (currentTile.inventory) > 0) {
 
-						currentTile.World.inventoryManager.PlaceInventory (
+						currentTile.world.inventoryManager.PlaceInventory (
 							this, 
 							currentTile.inventory, 
 							myJob.DesiresInventoryType (currentTile.inventory)
@@ -170,7 +170,7 @@ public class Character : IXmlSerializable
 						Inventory desired = myJob.GetFirstDesiredInventory ();
 
 						if (desired != null) {
-							Inventory supplier = currentTile.World.inventoryManager.GetClosestInventoryOfType (
+							Inventory supplier = currentTile.world.inventoryManager.GetClosestInventoryOfType (
 								                     desired.inventoryType, 
 								                     currentTile, 
 								                     desired.maxStackSize - desired.stackSize,
@@ -207,7 +207,7 @@ public class Character : IXmlSerializable
 
 		if (nextTile == null || nextTile == currentTile) {
 			if (pathAStar == null || pathAStar.count () == 0) {
-				pathAStar = new Path_AStar (currentTile.World, currentTile, destinationTile);
+				pathAStar = new Path_AStar (currentTile.world, currentTile, destinationTile);
 
 				if (pathAStar.count () == 0) {
 					Debug.LogError ("Path_AStar -- returned (0) no path to destinationTile");
@@ -221,11 +221,11 @@ public class Character : IXmlSerializable
 
 			nextTile = pathAStar.Dequeue ();
 
-			/*if (nextTile == currentTile) {
-				Debug.LogError ("update_DoMovement -- Dequeue -- nextTile is currentTile");
+			/*if (nextTile == destinationTile) {
+				nextTile = currentTile;
+				destinationTile = currentTile;
 			}*/
 		}
-		//Debug.Log ("CurrentTile: " + currentTile.X + " , " + currentTile.Y + "\n" + "NextTile: " + nextTile.X + " , " + nextTile.Y);
 
 		float distanceToTravel = Mathf.Sqrt (Mathf.Pow (currentTile.X - nextTile.X, 2) + Mathf.Pow (currentTile.Y - nextTile.Y, 2));
 
@@ -250,7 +250,7 @@ public class Character : IXmlSerializable
 
 	void GetNewJob ()
 	{
-		myJob = currentTile.World.jobQueue.Dequeue ();
+		myJob = currentTile.world.jobQueue.Dequeue ();
 
 		if (myJob == null) {
 			destinationTile = currentTile;
@@ -260,7 +260,7 @@ public class Character : IXmlSerializable
 		destinationTile = myJob.tile;
 		myJob.registerJobCompleteCallback (OnJobEnded);
 		myJob.registerJobCancelCallback (OnJobEnded);
-		pathAStar = new Path_AStar (currentTile.World, currentTile, destinationTile);
+		pathAStar = new Path_AStar (currentTile.world, currentTile, destinationTile);
 
 		if (pathAStar.count () == 0) {
 			Debug.LogError ("Path_AStar -- returned (0) no path to target job tile");

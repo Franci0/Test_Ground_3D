@@ -92,7 +92,7 @@ public static class FurnitureActions
 
 		foreach (Inventory inventory in job.inventoryRequirements.Values) {
 			if (inventory.stackSize > 0) {
-				job.tile.World.inventoryManager.PlaceInventory (job.tile, inventory);
+				job.tile.world.inventoryManager.PlaceInventory (job.tile, inventory);
 				return;
 			}
 		}

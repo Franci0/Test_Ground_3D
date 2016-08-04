@@ -157,7 +157,7 @@ public class World : IXmlSerializable
 		return tiles [x, y];
 	}
 
-	public Furniture PlaceFurniture (string furnitureType, Tile tile)
+	public Furniture PlaceFurniture (string furnitureType, Tile tile, bool doRoomFloodFill = true)
 	{
 		//1x1 tile
 		if (!furniturePrototypes.ContainsKey (furnitureType)) {
@@ -174,8 +174,8 @@ public class World : IXmlSerializable
 		furniture.RegisterOnRemovedCallback (OnFurnitureRemoved);
 		furnitures.Add (furniture);
 
-		if (furniture.roomEnclosure) {
-			Room.DoRoomFloodFill (furniture);
+		if (doRoomFloodFill && furniture.roomEnclosure) {
+			Room.DoRoomFloodFill (furniture.tile);
 		}
 
 		if (furnitureCreatedCallback != null) {
@@ -275,7 +275,7 @@ public class World : IXmlSerializable
 		}
 
 		rooms.Remove (room);
-		room.UnAssignAllTiles ();
+		room.ReturnTilesToOutsideRoom ();
 	}
 
 	public void AddRoom (Room room)
@@ -445,9 +445,13 @@ public class World : IXmlSerializable
 			do {
 				int x = int.Parse (reader.GetAttribute ("X"));
 				int y = int.Parse (reader.GetAttribute ("Y"));
-				Furniture furniture = PlaceFurniture (reader.GetAttribute ("FurnitureType"), tiles [x, y]);
+				Furniture furniture = PlaceFurniture (reader.GetAttribute ("FurnitureType"), tiles [x, y], false);
 				furniture.ReadXml (reader);
 			} while(reader.ReadToNextSibling ("Furniture"));
+
+			foreach (var furniture in furnitures) {
+				Room.DoRoomFloodFill (furniture.tile, true);
+			}
 		}
 	}
 

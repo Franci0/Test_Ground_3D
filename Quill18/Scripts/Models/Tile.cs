@@ -40,7 +40,7 @@ public class Tile : IXmlSerializable
 
 	public int Y{ get; protected set; }
 
-	public World World{ get; protected set; }
+	public World world{ get; protected set; }
 
 	public Inventory inventory;
 
@@ -70,7 +70,7 @@ public class Tile : IXmlSerializable
 
 	public Tile (World world, int x, int y)
 	{
-		this.World = world;
+		this.world = world;
 		this.X = x;
 		this.Y = y;
 		old = type;
@@ -99,7 +99,7 @@ public class Tile : IXmlSerializable
 
 		for (int x_off = X; x_off < (X + furnitureInstance.width); x_off++) {
 			for (int y_off = Y; y_off < (Y + furnitureInstance.height); y_off++) {
-				Tile tile = World.getTileAt (x_off, y_off);
+				Tile tile = world.getTileAt (x_off, y_off);
 				tile.furniture = furnitureInstance;
 			}
 		}
@@ -135,16 +135,16 @@ public class Tile : IXmlSerializable
 			neighbours = new Tile[8]; //Tile Order - N E S W NE SE SW NW
 		}
 
-		neighbours [0] = World.getTileAt (X, Y + 1);
-		neighbours [1] = World.getTileAt (X + 1, Y);
-		neighbours [2] = World.getTileAt (X, Y - 1);
-		neighbours [3] = World.getTileAt (X - 1, Y);
+		neighbours [0] = world.getTileAt (X, Y + 1);
+		neighbours [1] = world.getTileAt (X + 1, Y);
+		neighbours [2] = world.getTileAt (X, Y - 1);
+		neighbours [3] = world.getTileAt (X - 1, Y);
 
 		if (diagOk == true) {
-			neighbours [4] = World.getTileAt (X + 1, Y + 1);
-			neighbours [5] = World.getTileAt (X + 1, Y - 1);
-			neighbours [6] = World.getTileAt (X - 1, Y - 1);
-			neighbours [7] = World.getTileAt (X - 1, Y + 1);
+			neighbours [4] = world.getTileAt (X + 1, Y + 1);
+			neighbours [5] = world.getTileAt (X + 1, Y - 1);
+			neighbours [6] = world.getTileAt (X - 1, Y - 1);
+			neighbours [7] = world.getTileAt (X - 1, Y + 1);
 		}
 
 		return neighbours;
@@ -182,22 +182,22 @@ public class Tile : IXmlSerializable
 
 	public Tile North ()
 	{
-		return World.getTileAt (X, Y + 1);
+		return world.getTileAt (X, Y + 1);
 	}
 
 	public Tile South ()
 	{
-		return World.getTileAt (X, Y - 1);
+		return world.getTileAt (X, Y - 1);
 	}
 
 	public Tile West ()
 	{
-		return World.getTileAt (X - 1, Y);
+		return world.getTileAt (X - 1, Y);
 	}
 
 	public Tile East ()
 	{
-		return World.getTileAt (X + 1, Y);
+		return world.getTileAt (X + 1, Y);
 	}
 
 	public bool PlaceInventory (Inventory inv)
@@ -236,7 +236,7 @@ public class Tile : IXmlSerializable
 
 		for (int x_off = X; x_off < (X + temp.width); x_off++) {
 			for (int y_off = Y; y_off < (Y + temp.height); y_off++) {
-				Tile tile = World.getTileAt (x_off, y_off);
+				Tile tile = world.getTileAt (x_off, y_off);
 				tile.furniture = null;
 			}
 		}

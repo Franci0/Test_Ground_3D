@@ -113,7 +113,7 @@ public class Job
 			jobCancelCallback (this);
 		}
 
-		tile.World.jobQueue.Remove (this);
+		tile.world.jobQueue.Remove (this);
 	}
 
 	public virtual Job Clone ()

@@ -94,7 +94,7 @@ public class Furniture : IXmlSerializable
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
 					if (i != 0 || j != 0) {
-						t = tile.World.getTileAt (x + i, y + j);
+						t = tile.world.getTileAt (x + i, y + j);
 						//Debug.Log (t.X + " , " + t.Y);
 						if (t != null && t.furniture != null && t.furniture.onChangedCallback != null && t.furniture.furnitureType == furniture.furnitureType) {
 							t.furniture.onChangedCallback (t.furniture);
@@ -176,7 +176,7 @@ public class Furniture : IXmlSerializable
 	{
 		for (int x = tile.X; x < (tile.X + width); x++) {
 			for (int y = tile.Y; y < (tile.Y + height); y++) {
-				Tile temp = tile.World.getTileAt (x, y);
+				Tile temp = tile.world.getTileAt (x, y);
 
 				if (temp.Type != TileType.FLOOR) {
 					return false;
@@ -236,7 +236,7 @@ public class Furniture : IXmlSerializable
 	public void AddJob (Job job)
 	{
 		jobs.Add (job);
-		tile.World.jobQueue.Enqueue (job);
+		tile.world.jobQueue.Enqueue (job);
 	}
 
 	public void RemoveJob (Job job)
@@ -266,5 +266,11 @@ public class Furniture : IXmlSerializable
 		if (onRemovedCallback != null) {
 			onRemovedCallback (this);
 		}
+
+		if (roomEnclosure) {
+			Room.DoRoomFloodFill (tile);
+		}
+
+		tile.world.invalidateTileGraph ();
 	}
 }

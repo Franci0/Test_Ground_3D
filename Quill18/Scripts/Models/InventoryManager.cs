@@ -27,7 +27,7 @@ public class InventoryManager
 			}
 
 			inventories [tile.inventory.inventoryType].Add (tile.inventory);
-			tile.World.OnInventoryCreated (tile.inventory);
+			tile.world.OnInventoryCreated (tile.inventory);
 		}
 
 		return true;

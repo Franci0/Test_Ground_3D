@@ -213,7 +213,7 @@ public class MouseController : MonoBehaviour
 			sr.color = new Color (1f, 0.5f, 0.5f, 0.25f);
 		}
 
-		Furniture furniturePrototype = tile.World.GetFurniturePrototype (furnitureType);
+		Furniture furniturePrototype = tile.world.GetFurniturePrototype (furnitureType);
 		go.transform.position = new Vector3 (tile.X + ((furniturePrototype.width - 1) / 2f), tile.Y + ((furniturePrototype.height - 1) / 2f), 0);
 	}
 }

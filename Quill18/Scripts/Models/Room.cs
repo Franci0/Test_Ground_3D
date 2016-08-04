@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections;
 using System.Runtime.InteropServices;
+using Priority_Queue;
 
 public class Room
 {
@@ -12,59 +13,83 @@ public class Room
 	List<Tile> tiles;
 	World world;
 
-	public static void DoRoomFloodFill (Furniture sourceFurniture)
+	public static void DoRoomFloodFill (Tile sourceTile, bool onlyIfOutside = false)
 	{
-		World world = sourceFurniture.tile.World;
-		Room oldRoom = sourceFurniture.tile.room;
+		World world = sourceTile.world;
+		Room oldRoom = sourceTile.room;
 
-		foreach (var tile in sourceFurniture.tile.getNeighboors()) {
-			ActualFlooFill (tile, oldRoom, oldRoom.world);
-		}
+		if (oldRoom != null) {
 
-		sourceFurniture.tile.room = null;
-		oldRoom.tiles.Remove (sourceFurniture.tile);
-
-		if (!oldRoom.IsOutsideRoom ()) {
-			if (oldRoom.tiles.Count > 0) {
-				Debug.LogError ("oldRoom still has tiles assigned to it");
+			foreach (var tile in sourceTile.getNeighboors()) {
+				if (tile.room != null && (!onlyIfOutside || tile.room.IsOutsideRoom ())) {
+					ActualFlooFill (tile, oldRoom);
+				}
 			}
-			world.DeleteRoom (oldRoom);
+
+			sourceTile.room = null;
+			oldRoom.tiles.Remove (sourceTile);
+
+			if (!oldRoom.IsOutsideRoom ()) {
+				if (oldRoom.tiles.Count > 0) {
+					Debug.LogError ("oldRoom still has tiles assigned to it");
+				}
+				world.DeleteRoom (oldRoom);
+			}
+
+		} else {
+			ActualFlooFill (sourceTile, null);
 		}
 	}
 
-	protected static void ActualFlooFill (Tile tile, Room oldRoom, World world)
+	protected static void ActualFlooFill (Tile tile, Room oldRoom)
 	{
 		if (tile == null || tile.room != oldRoom || (tile.furniture != null && tile.furniture.roomEnclosure) || tile.Type == TileType.EMPTY) {
 			return;
 		}
 
-		Room newRoom = new Room (world);
+		Room newRoom = new Room (tile.world);
 		Queue<Tile> tilesToCheck = new Queue<Tile> ();
 		tilesToCheck.Enqueue (tile);
+		bool isConnectedToSpace = false;
 
 		while (tilesToCheck.Count > 0) {
 			Tile t = tilesToCheck.Dequeue ();
 
-			if (t.room == oldRoom) {
+			if (t.room != newRoom) {
 				newRoom.AssignTile (t);
 
 				Tile[] ns = t.getNeighboors ();
 
 				foreach (var t2 in ns) {
 					if (t2 == null || t2.Type == TileType.EMPTY) {
-						newRoom.UnAssignAllTiles ();
-						return;
-					}
+						isConnectedToSpace = true;
 
-					if (t2 != null && t2.room == oldRoom && (t2.furniture == null || !t2.furniture.roomEnclosure)) {
+						/*if (oldRoom != null) {
+							newRoom.UnAssignAllTiles ();
+							return;
+						}*/
+
+					} else if (t2.room != newRoom && (t2.furniture == null || !t2.furniture.roomEnclosure)) {
 						tilesToCheck.Enqueue (t2);
+						
 					}
 				}
 			}
 		}
 
-		newRoom.CopyGas (oldRoom);
-		tile.World.AddRoom (newRoom);
+		if (isConnectedToSpace) {
+			newRoom.ReturnTilesToOutsideRoom ();
+			return;
+		}
+
+		if (oldRoom != null) {
+			newRoom.CopyGas (oldRoom);
+
+		} else {
+			newRoom.MergeGasses (oldRoom);
+		}
+
+		tile.world.AddRoom (newRoom);
 	}
 
 	public Room (World _world)
@@ -89,10 +114,10 @@ public class Room
 		tiles.Add (tile);
 	}
 
-	public void UnAssignAllTiles ()
+	public void ReturnTilesToOutsideRoom ()
 	{
 		foreach (var tile in tiles) {
-			tile.room = tile.World.GetOutsideRoom ();
+			tile.room = tile.world.GetOutsideRoom ();
 		}
 
 		tiles.Clear ();
@@ -168,5 +193,10 @@ public class Room
 		}
 
 		return arr;
+	}
+
+	void MergeGasses (Room oldRoom)
+	{
+		
 	}
 }
