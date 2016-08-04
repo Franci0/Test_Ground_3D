@@ -7,8 +7,8 @@ public class SoundController : MonoBehaviour
 
 	void Start ()
 	{
-		WorldController.Instance.world.registerFurnitureCreatedCallback (onFurnitureCreated);
-		WorldController.Instance.world.registerTileChangedCallback (onTileChanged);
+		WorldController.Instance.world.RegisterFurnitureCreatedCallback (onFurnitureCreated);
+		WorldController.Instance.world.RegisterTileChangedCallback (onTileChanged);
 	}
 
 	void Update ()

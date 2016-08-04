@@ -23,6 +23,7 @@ public class Furniture : IXmlSerializable
 
 	public Func<Furniture,Accessiblity> isAccessible;
 	public Action<Furniture> onChangedCallback;
+	public Action<Furniture> onRemovedCallback;
 
 	public Color tint = Color.white;
 
@@ -141,14 +142,24 @@ public class Furniture : IXmlSerializable
 		}
 	}
 
-	public void registerOnChangedCallback (Action<Furniture> callback)
+	public void RegisterOnChangedCallback (Action<Furniture> callback)
 	{
 		onChangedCallback += callback;
 	}
 
-	public void unregisterOnChangedCallback (Action<Furniture> callback)
+	public void UnregisterOnChangedCallback (Action<Furniture> callback)
 	{
 		onChangedCallback -= callback;
+	}
+
+	public void RegisterOnRemovedCallback (Action<Furniture> callback)
+	{
+		onRemovedCallback += callback;
+	}
+
+	public void UnregisterOnRemovedCallback (Action<Furniture> callback)
+	{
+		onRemovedCallback -= callback;
 	}
 
 	public virtual Furniture Clone ()
@@ -246,5 +257,14 @@ public class Furniture : IXmlSerializable
 	public bool IsStockpile ()
 	{
 		return furnitureType == "Stockpile";
+	}
+
+	public void Deconstruct ()
+	{
+		tile.UnplaceFurniture ();
+
+		if (onRemovedCallback != null) {
+			onRemovedCallback (this);
+		}
 	}
 }

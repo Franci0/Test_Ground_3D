@@ -16,7 +16,7 @@ public class CharacterSpriteController : MonoBehaviour
 
 		characterGameObjectMap = new Dictionary<Character, GameObject> ();
 
-		world.registerCharacterCreatedCallback (OnCharacterCreated);
+		world.RegisterCharacterCreatedCallback (OnCharacterCreated);
 
 		foreach (Character character in world.characters) {
 			OnCharacterCreated (character);

@@ -13,7 +13,7 @@ public class FurnitureSpriteController : MonoBehaviour
 		get{ return WorldController.Instance.world; }
 	}
 
-	public Sprite getSpriteForFurniture (Furniture furniture)
+	public Sprite GetSpriteForFurniture (Furniture furniture)
 	{
 		//Debug.Log ("getSpriteForFurniture");
 		string spriteName = furniture.furnitureType;
@@ -100,7 +100,7 @@ public class FurnitureSpriteController : MonoBehaviour
 		return furnitureSprites [spriteName];
 	}
 
-	public Sprite getSpriteForFurniture (string objectType)
+	public Sprite GetSpriteForFurniture (string objectType)
 	{
 		//Debug.Log ("getSpriteForFurniture");
 		if (furnitureSprites.ContainsKey (objectType) == true) {
@@ -121,11 +121,11 @@ public class FurnitureSpriteController : MonoBehaviour
 
 	void Start ()
 	{
-		loadSprites ();
+		LoadSprites ();
 
 		furnitureGameObjectMap = new Dictionary<Furniture, GameObject> ();
 
-		world.registerFurnitureCreatedCallback (OnFurnitureCreated);
+		world.RegisterFurnitureCreatedCallback (OnFurnitureCreated);
 
 		foreach (Furniture furniture in world.furnitures) {
 			OnFurnitureCreated (furniture);
@@ -156,13 +156,14 @@ public class FurnitureSpriteController : MonoBehaviour
 		}
 
 		SpriteRenderer sr = furniture_go.AddComponent<SpriteRenderer> ();
-		sr.sprite = getSpriteForFurniture (furniture);
+		sr.sprite = GetSpriteForFurniture (furniture);
 		sr.sortingLayerName = "Furnitures";
 		sr.color = furniture.tint;
 
 		//Debug.Log (furniture_go.GetComponent<SpriteRenderer> ().sprite);
 
-		furniture.registerOnChangedCallback (OnFurnitureChanged);
+		furniture.RegisterOnChangedCallback (OnFurnitureChanged);
+		furniture.RegisterOnRemovedCallback (OnFurnitureRemoved);
 
 	}
 
@@ -183,13 +184,13 @@ public class FurnitureSpriteController : MonoBehaviour
 
 		SpriteRenderer sr = furniture_go.GetComponent<SpriteRenderer> ();
 
-		sr.sprite = getSpriteForFurniture (furniture);
+		sr.sprite = GetSpriteForFurniture (furniture);
 		sr.sortingLayerName = "Furnitures";
 		sr.color = furniture.tint;
 
 	}
 
-	void loadSprites ()
+	void LoadSprites ()
 	{
 		furnitureSprites = new Dictionary<string, Sprite> ();
 
@@ -200,6 +201,18 @@ public class FurnitureSpriteController : MonoBehaviour
 			furnitureSprites [sprite.name] = sprite;
 		}
 
+	}
+
+	void OnFurnitureRemoved (Furniture furniture)
+	{
+		if (furnitureGameObjectMap.ContainsKey (furniture) == false) {
+			Debug.LogError ("OnFurnitureRemoved -- furnitureGameObjectMap doesn't contain key: " + furniture);
+			return;
+		}
+
+		GameObject furniture_go = furnitureGameObjectMap [furniture];
+		Destroy (furniture_go);
+		furnitureGameObjectMap.Remove (furniture);
 	}
 
 }

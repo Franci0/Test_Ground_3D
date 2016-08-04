@@ -37,7 +37,7 @@ public class TileSpriteController : MonoBehaviour
 			}
 		}
 
-		world.registerTileChangedCallback (OnTileChanged);
+		world.RegisterTileChangedCallback (OnTileChanged);
 	}
 
 	void destroyAllTileGameObjects ()

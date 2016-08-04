@@ -19,7 +19,7 @@ public class InventorySpriteController : MonoBehaviour
 
 		inventoryGameObjectMap = new Dictionary<Inventory, GameObject> ();
 
-		world.registerInventoryCreatedCallback (OnInventoryCreated);
+		world.RegisterInventoryCreatedCallback (OnInventoryCreated);
 
 		foreach (string inventoryType in world.inventoryManager.inventories.Keys) {
 			foreach (Inventory inventory in world.inventoryManager.inventories[inventoryType]) {

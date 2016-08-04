@@ -89,7 +89,7 @@ public class Tile : IXmlSerializable
 	public bool placeFurniture (Furniture furnitureInstance)
 	{
 		if (furnitureInstance == null) {
-			return UninstallFurniture ();
+			return UnplaceFurniture ();
 		}
 
 		if (!furnitureInstance.isValidPosition (this)) {
@@ -226,9 +226,23 @@ public class Tile : IXmlSerializable
 		return true;
 	}
 
-	public bool UninstallFurniture ()
+	public bool UnplaceFurniture ()
 	{
-		furniture = null;
+		if (furniture == null) {
+			return false;
+		}
+
+		Furniture temp = furniture;
+
+		for (int x_off = X; x_off < (X + temp.width); x_off++) {
+			for (int y_off = Y; y_off < (Y + temp.height); y_off++) {
+				Tile tile = World.getTileAt (x_off, y_off);
+				tile.furniture = null;
+			}
+		}
+
+		temp = null;
+
 		return true;
 	}
 

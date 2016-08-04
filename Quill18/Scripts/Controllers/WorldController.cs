@@ -61,7 +61,7 @@ public class WorldController : MonoBehaviour
 
 	void Update ()
 	{
-		world.update (Time.deltaTime);
+		world.Update (Time.deltaTime);
 	}
 
 	void CreateEmptyWorld ()

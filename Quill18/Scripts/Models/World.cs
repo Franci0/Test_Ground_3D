@@ -171,6 +171,7 @@ public class World : IXmlSerializable
 			return null;
 		}
 
+		furniture.RegisterOnRemovedCallback (OnFurnitureRemoved);
 		furnitures.Add (furniture);
 
 		if (furniture.roomEnclosure) {
@@ -188,32 +189,32 @@ public class World : IXmlSerializable
 		return furniture;
 	}
 
-	public void registerFurnitureCreatedCallback (Action<Furniture> callback)
+	public void RegisterFurnitureCreatedCallback (Action<Furniture> callback)
 	{
 		furnitureCreatedCallback += callback;
 	}
 
-	public void unregisterFurnitureCreatedCallback (Action<Furniture> callback)
+	public void UnregisterFurnitureCreatedCallback (Action<Furniture> callback)
 	{
 		furnitureCreatedCallback -= callback;
 	}
 
-	public void registerTileChangedCallback (Action<Tile> callback)
+	public void RegisterTileChangedCallback (Action<Tile> callback)
 	{
 		tileChangedCallback += callback;
 	}
 
-	public void unregisterTileChangedCallback (Action<Tile> callback)
+	public void UnregisterTileChangedCallback (Action<Tile> callback)
 	{
 		tileChangedCallback -= callback;
 	}
 
-	public bool isFurniturePlacementValid (string furnitureType, Tile tile)
+	public bool IsFurniturePlacementValid (string furnitureType, Tile tile)
 	{
 		return furniturePrototypes [furnitureType].DEFAULT__isValidPosition (tile);
 	}
 
-	public Furniture getFurniturePrototype (String objectType)
+	public Furniture GetFurniturePrototype (String objectType)
 	{
 		if (furniturePrototypes.ContainsKey (objectType) == false) {
 			Debug.LogError ("getFurniturePrototype -- furniturePrototypes doesn't contain " + objectType);
@@ -222,12 +223,12 @@ public class World : IXmlSerializable
 		return furniturePrototypes [objectType];
 	}
 
-	public void registerCharacterCreatedCallback (Action<Character> callback)
+	public void RegisterCharacterCreatedCallback (Action<Character> callback)
 	{
 		characterCreatedCallback += callback;
 	}
 
-	public void unregisterCharacterCreatedCallback (Action<Character> callback)
+	public void UnregisterCharacterCreatedCallback (Action<Character> callback)
 	{
 		characterCreatedCallback -= callback;
 	}
@@ -245,7 +246,7 @@ public class World : IXmlSerializable
 		return character;
 	}
 
-	public void update (float deltaTime)
+	public void Update (float deltaTime)
 	{
 		foreach (Character character in characters) {
 			character.Update (deltaTime);
@@ -282,17 +283,17 @@ public class World : IXmlSerializable
 		rooms.Add (room);
 	}
 
-	public void registerInventoryCreatedCallback (Action<Inventory> callback)
+	public void RegisterInventoryCreatedCallback (Action<Inventory> callback)
 	{
 		inventoryCreatedCallback += callback;
 	}
 
-	public void unregisterInventoryCreatedCallback (Action<Inventory> callback)
+	public void UnregisterInventoryCreatedCallback (Action<Inventory> callback)
 	{
 		inventoryCreatedCallback -= callback;
 	}
 
-	void onTileChanged (Tile tile)
+	void OnTileChanged (Tile tile)
 	{
 		if (tileChangedCallback == null) {
 			return;
@@ -415,7 +416,7 @@ public class World : IXmlSerializable
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				tiles [x, y] = new Tile (this, x, y);
-				tiles [x, y].registerTileChangedCallback (onTileChanged);
+				tiles [x, y].registerTileChangedCallback (OnTileChanged);
 				tiles [x, y].room = GetOutsideRoom ();
 			}
 		}
@@ -460,5 +461,10 @@ public class World : IXmlSerializable
 				character.ReadXml (reader);
 			} while(reader.ReadToNextSibling ("Character"));
 		}
+	}
+
+	public void OnFurnitureRemoved (Furniture furniture)
+	{
+		furnitures.Remove (furniture);
 	}
 }

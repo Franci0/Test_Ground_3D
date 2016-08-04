@@ -140,7 +140,7 @@ public class MouseController : MonoBehaviour
 				tile = WorldController.Instance.world.getTileAt (x, y);
 
 				if (tile != null) {
-					if (buildModeController.buildModeIsObject) {
+					if (buildModeController.buildMode == BuildMode.FURNITURE) {
 						ShowFurnitureSpriteAtTile (buildModeController.objectType, tile);
 
 					} else {
@@ -204,16 +204,16 @@ public class MouseController : MonoBehaviour
 		dragCursors.Add (go);
 
 		SpriteRenderer sr = go.AddComponent<SpriteRenderer> ();
-		sr.sprite = furnitureSpriteController.getSpriteForFurniture (furnitureType);
+		sr.sprite = furnitureSpriteController.GetSpriteForFurniture (furnitureType);
 		sr.sortingLayerName = "Jobs";
 
-		if (WorldController.Instance.world.isFurniturePlacementValid (furnitureType, tile)) {
+		if (WorldController.Instance.world.IsFurniturePlacementValid (furnitureType, tile)) {
 			sr.color = new Color (0.5f, 1f, 0.5f, 0.25f);
 		} else {
 			sr.color = new Color (1f, 0.5f, 0.5f, 0.25f);
 		}
 
-		Furniture furniturePrototype = tile.World.getFurniturePrototype (furnitureType);
+		Furniture furniturePrototype = tile.World.GetFurniturePrototype (furnitureType);
 		go.transform.position = new Vector3 (tile.X + ((furniturePrototype.width - 1) / 2f), tile.Y + ((furniturePrototype.height - 1) / 2f), 0);
 	}
 }

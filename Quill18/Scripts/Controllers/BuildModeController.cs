@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
 
+public enum BuildMode
+{
+	FLOOR,
+	FURNITURE,
+	DECONSTRUCT
+}
+
 public class BuildModeController : MonoBehaviour
 {
-	public bool buildModeIsObject = false;
+	public BuildMode buildMode = BuildMode.FLOOR;
 	public string objectType;
 	TileType buildModeTile = TileType.FLOOR;
 	bool devActive = false;
@@ -17,7 +24,7 @@ public class BuildModeController : MonoBehaviour
 
 	public void setMode_BuildFurniture (string furnitureType)
 	{
-		buildModeIsObject = true;
+		buildMode = BuildMode.FURNITURE;
 		devActive = false;
 		objectType = furnitureType;
 		mouseController.StartBuildMode ();
@@ -25,23 +32,30 @@ public class BuildModeController : MonoBehaviour
 
 	public void setMode_BuildFloor ()
 	{
-		buildModeIsObject = false;
+		buildMode = BuildMode.FLOOR;
 		devActive = false;
 		buildModeTile = TileType.FLOOR;
 		mouseController.StartBuildMode ();
 	}
 
-	public void setMode_Bulldoze ()
+	public void setMode_RemoveFloor ()
 	{
-		buildModeIsObject = false;
+		buildMode = BuildMode.FLOOR;
 		devActive = false;
 		buildModeTile = TileType.EMPTY;
 		mouseController.StartBuildMode ();
 	}
 
+	public void setMode_Deconstruct ()
+	{
+		buildMode = BuildMode.DECONSTRUCT;
+		devActive = false;
+		mouseController.StartBuildMode ();
+	}
+
 	public void doBuild (Tile tile)
 	{
-		if (buildModeIsObject == true) {
+		if (buildMode == BuildMode.FURNITURE) {
 
 			string furnitureType = objectType;
 
@@ -57,7 +71,7 @@ public class BuildModeController : MonoBehaviour
 				}
 			}*/
 
-			if (tile.pendingFurnitureJob == null && WorldController.Instance.world.isFurniturePlacementValid (furnitureType, tile)) {
+			if (tile.pendingFurnitureJob == null && WorldController.Instance.world.IsFurniturePlacementValid (furnitureType, tile)) {
 
 				Job job;
 
@@ -68,7 +82,7 @@ public class BuildModeController : MonoBehaviour
 					job = new Job (tile, FurnitureActions.JobCompleteFurnitureBuilding, furnitureType, 0.1f, null);
 				}
 
-				job.furniturePrototype =	WorldController.Instance.world.getFurniturePrototype (furnitureType);
+				job.furniturePrototype =	WorldController.Instance.world.GetFurniturePrototype (furnitureType);
 
 				job.tile = tile;
 
@@ -80,14 +94,23 @@ public class BuildModeController : MonoBehaviour
 
 				WorldController.Instance.world.jobQueue.Enqueue (job);
 			}
-		} else {
+
+		} else if (buildMode == BuildMode.FLOOR) {
 			tile.Type = buildModeTile;
+
+		} else if (buildMode == BuildMode.DECONSTRUCT) {
+			if (tile.furniture != null) {
+				tile.furniture.Deconstruct ();
+			}
+
+		} else {
+			Debug.LogError ("doBuild - Unimplemented BuildMode");
 		}
 	}
 
 	public void setMode_DevBuildFurniture (string furnitureType)
 	{
-		buildModeIsObject = true;
+		buildMode = BuildMode.FURNITURE;
 		devActive = true;
 		objectType = furnitureType;
 		mouseController.StartBuildMode ();
@@ -95,11 +118,11 @@ public class BuildModeController : MonoBehaviour
 
 	public bool IsObjectDraggable ()
 	{
-		if (!buildModeIsObject) {
+		if (buildMode == BuildMode.FLOOR || buildMode == BuildMode.DECONSTRUCT) {
 			return true;
 		}
 
-		Furniture furniturePrototype = WorldController.Instance.world.getFurniturePrototype (objectType);
+		Furniture furniturePrototype = WorldController.Instance.world.GetFurniturePrototype (objectType);
 		return furniturePrototype.width == 1 && furniturePrototype.height == 1;
 	}
 
