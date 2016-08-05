@@ -42,8 +42,8 @@ public class JobSpriteController : MonoBehaviour
 		sr.color = new Color (0.5f, 1f, 0.5f, 0.25f);
 
 		if (job.jobObjectType == "Door") {
-			Tile westTile = job.tile.world.getTileAt (job.tile.X - 1, job.tile.Y);
-			Tile eastTile = job.tile.world.getTileAt (job.tile.X + 1, job.tile.Y);
+			Tile westTile = World.worldInstance.getTileAt (job.tile.X - 1, job.tile.Y);
+			Tile eastTile = World.worldInstance.getTileAt (job.tile.X + 1, job.tile.Y);
 
 			if (westTile != null && eastTile != null && westTile.furniture != null && eastTile.furniture != null && westTile.furniture.furnitureType == "Wall" && eastTile.furniture.furnitureType == "Wall") {
 				job_go.transform.rotation = Quaternion.Euler (0, 0, 90);

@@ -8,6 +8,7 @@ using UnityEngine.Rendering;
 
 public class World : IXmlSerializable
 {
+	public static World worldInstance{ get; protected set; }
 
 	public const String openness = "openness";
 	public const String is_opening = "is_opening";
@@ -27,8 +28,7 @@ public class World : IXmlSerializable
 	public List<Room> rooms;
 
 	public Dictionary<string,Job> furnitureJobPrototypes;
-
-	Dictionary<string,Furniture> furniturePrototypes;
+	public Dictionary<string,Furniture> furniturePrototypes;
 
 	Action<Furniture> furnitureCreatedCallback;
 	Action<Tile> tileChangedCallback;
@@ -420,24 +420,23 @@ public class World : IXmlSerializable
 	void SetupWorld (int width, int height)
 	{
 		jobQueue = new JobQueue ();
-
+		worldInstance = this;
 		Width = width;
 		Height = height;
 		tiles = new Tile[width, height];
 
 		rooms = new List<Room> ();
-		rooms.Add (new Room (this));
+		rooms.Add (new Room ());
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				tiles [x, y] = new Tile (this, x, y);
+				tiles [x, y] = new Tile (x, y);
 				tiles [x, y].registerTileChangedCallback (OnTileChanged);
 				tiles [x, y].room = GetOutsideRoom ();
 			}
 		}
 
 		CreateFurniturePrototypes ();
-
 		characters = new List<Character> ();
 		furnitures = new List<Furniture> ();
 		inventoryManager = new InventoryManager ();

@@ -9,9 +9,9 @@ public class FurnitureSpriteController : MonoBehaviour
 	Dictionary<Furniture,GameObject> furnitureGameObjectMap;
 	Dictionary<string,Sprite> furnitureSprites;
 
-	World world {
+	/*World world {
 		get{ return WorldController.Instance.world; }
-	}
+	}*/
 
 	public Sprite GetSpriteForFurniture (Furniture furniture)
 	{
@@ -54,12 +54,12 @@ public class FurnitureSpriteController : MonoBehaviour
 
 		for (int i = -1; i <= 1; i = i + 2) {
 			for (int j = -1; j <= 1; j = j + 2) {
-				t = world.getTileAt (x + i, y + j);
+				t = World.worldInstance.getTileAt (x + i, y + j);
 				if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 
-					t = world.getTileAt (x + i, y);
+					t = World.worldInstance.getTileAt (x + i, y);
 					if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
-						t = world.getTileAt (x, y + j);
+						t = World.worldInstance.getTileAt (x, y + j);
 						if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 							spriteName += "Full_";
 							exit = true;
@@ -73,19 +73,19 @@ public class FurnitureSpriteController : MonoBehaviour
 			}
 		}
 
-		t = world.getTileAt (x - 1, y);
+		t = World.worldInstance.getTileAt (x - 1, y);
 		if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 			spriteName += "W";
 		}
-		t = world.getTileAt (x + 1, y);
+		t = World.worldInstance.getTileAt (x + 1, y);
 		if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 			spriteName += "E";
 		}
-		t = world.getTileAt (x, y + 1);
+		t = World.worldInstance.getTileAt (x, y + 1);
 		if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 			spriteName += "N";
 		}
-		t = world.getTileAt (x, y - 1);
+		t = World.worldInstance.getTileAt (x, y - 1);
 		if (t != null && t.furniture != null && t.furniture.furnitureType == furniture.furnitureType) {
 			spriteName += "S";
 		}
@@ -125,9 +125,9 @@ public class FurnitureSpriteController : MonoBehaviour
 
 		furnitureGameObjectMap = new Dictionary<Furniture, GameObject> ();
 
-		world.RegisterFurnitureCreatedCallback (OnFurnitureCreated);
+		World.worldInstance.RegisterFurnitureCreatedCallback (OnFurnitureCreated);
 
-		foreach (Furniture furniture in world.furnitures) {
+		foreach (Furniture furniture in World.worldInstance.furnitures) {
 			OnFurnitureCreated (furniture);
 		}
 	}
@@ -147,8 +147,8 @@ public class FurnitureSpriteController : MonoBehaviour
 		furniture_go.transform.SetParent (this.transform, true);
 
 		if (furniture.furnitureType == "Door") {
-			Tile westTile = world.getTileAt (furniture.tile.X - 1, furniture.tile.Y);
-			Tile eastTile = world.getTileAt (furniture.tile.X + 1, furniture.tile.Y);
+			Tile westTile = World.worldInstance.getTileAt (furniture.tile.X - 1, furniture.tile.Y);
+			Tile eastTile = World.worldInstance.getTileAt (furniture.tile.X + 1, furniture.tile.Y);
 
 			if (westTile != null && eastTile != null && westTile.furniture != null && eastTile.furniture != null && westTile.furniture.furnitureType == "Wall" && eastTile.furniture.furnitureType == "Wall") {
 				furniture_go.transform.rotation = Quaternion.Euler (0, 0, 90);

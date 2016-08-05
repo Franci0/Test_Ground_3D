@@ -9,9 +9,9 @@ public class InventorySpriteController : MonoBehaviour
 	Dictionary<Inventory,GameObject> inventoryGameObjectMap;
 	Dictionary<string,Sprite> inventorySprites;
 
-	World world {
+	/*World world {
 		get{ return WorldController.Instance.world; }
-	}
+	}*/
 
 	void Start ()
 	{
@@ -19,10 +19,10 @@ public class InventorySpriteController : MonoBehaviour
 
 		inventoryGameObjectMap = new Dictionary<Inventory, GameObject> ();
 
-		world.RegisterInventoryCreatedCallback (OnInventoryCreated);
+		World.worldInstance.RegisterInventoryCreatedCallback (OnInventoryCreated);
 
-		foreach (string inventoryType in world.inventoryManager.inventories.Keys) {
-			foreach (Inventory inventory in world.inventoryManager.inventories[inventoryType]) {
+		foreach (string inventoryType in World.worldInstance.inventoryManager.inventories.Keys) {
+			foreach (Inventory inventory in World.worldInstance.inventoryManager.inventories[inventoryType]) {
 				OnInventoryCreated (inventory);
 			}
 		}

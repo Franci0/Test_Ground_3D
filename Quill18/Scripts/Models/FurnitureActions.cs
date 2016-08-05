@@ -92,7 +92,7 @@ public static class FurnitureActions
 
 		foreach (Inventory inventory in job.inventoryRequirements.Values) {
 			if (inventory.stackSize > 0) {
-				job.tile.world.inventoryManager.PlaceInventory (job.tile, inventory);
+				World.worldInstance.inventoryManager.PlaceInventory (job.tile, inventory);
 				return;
 			}
 		}
@@ -136,7 +136,7 @@ public static class FurnitureActions
 	public static void MiningDroneStation_JobComplete (Job job)
 	{
 		if (job.tile.inventory == null || job.tile.inventory.stackSize < job.tile.inventory.maxStackSize) {
-			job.tile.world.inventoryManager.PlaceInventory (job.tile, new Inventory ("Steel Plate", 50, 10));
+			World.worldInstance.inventoryManager.PlaceInventory (job.tile, new Inventory ("Steel Plate", 50, 10));
 			job.furniture.RemoveJob (job);
 		}
 

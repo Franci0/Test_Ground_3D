@@ -114,7 +114,7 @@ public class Job
 			jobCancelCallback (this);
 		}
 
-		tile.world.jobQueue.Remove (this);
+		World.worldInstance.jobQueue.Remove (this);
 	}
 
 	public virtual Job Clone ()

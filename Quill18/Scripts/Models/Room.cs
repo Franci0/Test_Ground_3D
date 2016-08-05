@@ -11,11 +11,10 @@ public class Room
 	Dictionary<string, float> atmosphericGasses;
 
 	List<Tile> tiles;
-	World world;
+	//World world;
 
 	public static void DoRoomFloodFill (Tile sourceTile, bool onlyIfOutside = false)
 	{
-		World world = sourceTile.world;
 		Room oldRoom = sourceTile.room;
 
 		if (oldRoom != null) {
@@ -33,7 +32,7 @@ public class Room
 				if (oldRoom.tiles.Count > 0) {
 					Debug.LogError ("oldRoom still has tiles assigned to it");
 				}
-				world.DeleteRoom (oldRoom);
+				World.worldInstance.DeleteRoom (oldRoom);
 			}
 
 		} else {
@@ -47,7 +46,7 @@ public class Room
 			return;
 		}
 
-		Room newRoom = new Room (tile.world);
+		Room newRoom = new Room ();
 		Queue<Tile> tilesToCheck = new Queue<Tile> ();
 		tilesToCheck.Enqueue (tile);
 		bool isConnectedToSpace = false;
@@ -89,12 +88,12 @@ public class Room
 			newRoom.MergeGasses (oldRoom);
 		}
 
-		tile.world.AddRoom (newRoom);
+		World.worldInstance.AddRoom (newRoom);
 	}
 
-	public Room (World _world)
+	public Room ()
 	{
-		world = _world;
+		//world = _world;
 		tiles = new List<Tile> ();
 		atmosphericGasses = new Dictionary<string, float> ();
 	}
@@ -117,7 +116,7 @@ public class Room
 	public void ReturnTilesToOutsideRoom ()
 	{
 		foreach (var tile in tiles) {
-			tile.room = tile.world.GetOutsideRoom ();
+			tile.room = World.worldInstance.GetOutsideRoom ();
 		}
 
 		tiles.Clear ();
@@ -174,7 +173,7 @@ public class Room
 			return true;
 		}*/
 
-		return this == world.GetOutsideRoom ();
+		return this == World.worldInstance.GetOutsideRoom ();
 	}
 
 	void CopyGas (Room other)

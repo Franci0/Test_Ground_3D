@@ -6,9 +6,9 @@ public class CharacterSpriteController : MonoBehaviour
 	Dictionary<Character,GameObject> characterGameObjectMap;
 	Dictionary<string,Sprite> characterSprites;
 
-	World world {
+	/*World world {
 		get{ return WorldController.Instance.world; }
-	}
+	}*/
 
 	void Start ()
 	{
@@ -16,9 +16,9 @@ public class CharacterSpriteController : MonoBehaviour
 
 		characterGameObjectMap = new Dictionary<Character, GameObject> ();
 
-		world.RegisterCharacterCreatedCallback (OnCharacterCreated);
+		World.worldInstance.RegisterCharacterCreatedCallback (OnCharacterCreated);
 
-		foreach (Character character in world.characters) {
+		foreach (Character character in World.worldInstance.characters) {
 			OnCharacterCreated (character);
 		}
 	}

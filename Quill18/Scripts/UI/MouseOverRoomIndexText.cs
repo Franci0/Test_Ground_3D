@@ -28,6 +28,6 @@ public class MouseOverRoomIndexText : MonoBehaviour
 	{
 		Tile tile = mouseController.GetMouseOverTile ();
 
-		myText.text = "Room Index: " + tile.world.rooms.IndexOf (tile.room).ToString ();
+		myText.text = "Room Index: " + World.worldInstance.rooms.IndexOf (tile.room).ToString ();
 	}
 }

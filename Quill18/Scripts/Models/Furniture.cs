@@ -97,7 +97,7 @@ public class Furniture : IXmlSerializable
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
 					if (i != 0 || j != 0) {
-						t = tile.world.getTileAt (x + i, y + j);
+						t = World.worldInstance.getTileAt (x + i, y + j);
 						//Debug.Log (t.X + " , " + t.Y);
 						if (t != null && t.furniture != null && t.furniture.onChangedCallback != null && t.furniture.furnitureType == furniture.furnitureType) {
 							t.furniture.onChangedCallback (t.furniture);
@@ -179,7 +179,7 @@ public class Furniture : IXmlSerializable
 	{
 		for (int x = tile.X; x < (tile.X + width); x++) {
 			for (int y = tile.Y; y < (tile.Y + height); y++) {
-				Tile temp = tile.world.getTileAt (x, y);
+				Tile temp = World.worldInstance.getTileAt (x, y);
 
 				if (temp.Type != TileType.FLOOR) {
 					return false;
@@ -240,7 +240,7 @@ public class Furniture : IXmlSerializable
 	{
 		job.furniture = this;
 		jobs.Add (job);
-		tile.world.jobQueue.Enqueue (job);
+		World.worldInstance.jobQueue.Enqueue (job);
 	}
 
 	public void RemoveJob (Job job)
@@ -276,11 +276,11 @@ public class Furniture : IXmlSerializable
 			Room.DoRoomFloodFill (tile);
 		}
 
-		tile.world.invalidateTileGraph ();
+		World.worldInstance.invalidateTileGraph ();
 	}
 
 	public Tile GetJobSpotTile ()
 	{
-		return tile.world.getTileAt (tile.X + (int)jobSpotOffset.x, tile.Y + (int)jobSpotOffset.y);
+		return World.worldInstance.getTileAt (tile.X + (int)jobSpotOffset.x, tile.Y + (int)jobSpotOffset.y);
 	}
 }

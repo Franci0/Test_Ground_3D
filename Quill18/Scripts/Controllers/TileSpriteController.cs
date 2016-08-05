@@ -9,18 +9,18 @@ public class TileSpriteController : MonoBehaviour
 
 	Dictionary<Tile,GameObject> tileGameObjectMap;
 
-	World world {
+	/*World world {
 		get{ return WorldController.Instance.world; }
-	}
+	}*/
 
 	void Start ()
 	{
 		tileGameObjectMap = new Dictionary<Tile, GameObject> ();
 
-		for (int x = 0; x < world.Width; x++) {
-			for (int y = 0; y < world.Height; y++) {
+		for (int x = 0; x < World.worldInstance.Width; x++) {
+			for (int y = 0; y < World.worldInstance.Height; y++) {
 
-				Tile tile_data = world.getTileAt (x, y);	
+				Tile tile_data = World.worldInstance.getTileAt (x, y);	
 
 				GameObject tile_go = new GameObject ();
 
@@ -37,7 +37,7 @@ public class TileSpriteController : MonoBehaviour
 			}
 		}
 
-		world.RegisterTileChangedCallback (OnTileChanged);
+		World.worldInstance.RegisterTileChangedCallback (OnTileChanged);
 	}
 
 	void destroyAllTileGameObjects ()
