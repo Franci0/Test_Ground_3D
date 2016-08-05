@@ -26,9 +26,11 @@ public class Furniture : IXmlSerializable
 	public Action<Furniture> onRemovedCallback;
 
 	public Color tint = Color.white;
+	public Vector2 jobSpotOffset = Vector2.zero;
 
 	protected Dictionary<string,float> furnitureParameters;
 	protected Action<Furniture,float> updateActions;
+
 	Func<Tile, bool> funcPositionValidation;
 	List<Job> jobs;
 
@@ -70,6 +72,7 @@ public class Furniture : IXmlSerializable
 		linksToNeighboors = other.linksToNeighboors;
 		isAccessible = other.isAccessible;
 		jobs = new List<Job> ();
+		jobSpotOffset = other.jobSpotOffset;
 	}
 
 	public static Furniture PlaceInstance (Furniture prototype, Tile tile)
@@ -235,12 +238,14 @@ public class Furniture : IXmlSerializable
 
 	public void AddJob (Job job)
 	{
+		job.furniture = this;
 		jobs.Add (job);
 		tile.world.jobQueue.Enqueue (job);
 	}
 
 	public void RemoveJob (Job job)
 	{
+		job.furniture = null;
 		jobs.Remove (job);
 		job.CancelJob ();
 		//tile.World.jobQueue.Remove (job);
@@ -272,5 +277,10 @@ public class Furniture : IXmlSerializable
 		}
 
 		tile.world.invalidateTileGraph ();
+	}
+
+	public Tile GetJobSpotTile ()
+	{
+		return tile.world.getTileAt (tile.X + (int)jobSpotOffset.x, tile.Y + (int)jobSpotOffset.y);
 	}
 }

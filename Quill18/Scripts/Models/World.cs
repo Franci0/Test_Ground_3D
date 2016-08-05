@@ -400,6 +400,21 @@ public class World : IXmlSerializable
 		);
 
 		furniturePrototypes ["Oxygen Generator"].RegisterUpdateAction (FurnitureActions.OxygenGenerator_UpdateAction);
+
+		furniturePrototypes.Add (
+			"Mining Drone Station", 
+			new Furniture (
+				"Mining Drone Station", 
+				1, 
+				3, 
+				3, 
+				false, 
+				false
+			)
+		);
+
+		furniturePrototypes ["Mining Drone Station"].jobSpotOffset = new Vector2 (1, 0);
+		furniturePrototypes ["Mining Drone Station"].RegisterUpdateAction (FurnitureActions.MiningDroneStation_UpdateAction);
 	}
 
 	void SetupWorld (int width, int height)

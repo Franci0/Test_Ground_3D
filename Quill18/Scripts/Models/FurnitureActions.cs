@@ -88,7 +88,7 @@ public static class FurnitureActions
 
 	static void Stockpile_JobWorked (Job job)
 	{
-		job.tile.furniture.RemoveJob (job);
+		job.furniture.RemoveJob (job);
 
 		foreach (Inventory inventory in job.inventoryRequirements.Values) {
 			if (inventory.stackSize > 0) {
@@ -109,4 +109,37 @@ public static class FurnitureActions
 			furniture.tile.room.ChangeGas ("O2", 0.01f * deltaTime);
 		}
 	}
+
+	public static void MiningDroneStation_UpdateAction (Furniture furniture, float deltaTime)
+	{
+		if (furniture.JobCount () > 0) {
+			return;
+		}
+
+		Tile jobSpot = furniture.GetJobSpotTile ();
+
+		if (jobSpot.inventory != null && (jobSpot.inventory.inventoryType != "Steel Plate" || jobSpot.inventory.stackSize >= jobSpot.inventory.maxStackSize)) {
+			return;
+		}
+
+		Job job = new Job (
+			          jobSpot,
+			          MiningDroneStation_JobComplete,
+			          null,
+			          1f,
+			          null
+		          );
+
+		furniture.AddJob (job);
+	}
+
+	public static void MiningDroneStation_JobComplete (Job job)
+	{
+		if (job.tile.inventory == null || job.tile.inventory.stackSize < job.tile.inventory.maxStackSize) {
+			job.tile.world.inventoryManager.PlaceInventory (job.tile, new Inventory ("Steel Plate", 50, 10));
+			job.furniture.RemoveJob (job);
+		}
+
+	}
+
 }

@@ -14,6 +14,7 @@ public class Job
 	public bool canTakeFromStockpile = true;
 
 	public Furniture furniturePrototype;
+	public Furniture furniture;
 
 	Action<Job> jobCompleteCallback;
 	Action<Job> jobCancelCallback;

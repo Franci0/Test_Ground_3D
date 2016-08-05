@@ -9,12 +9,19 @@ public class Character : IXmlSerializable
 {
 	public float X { 
 		get { 
+			if (nextTile == null) {
+				return currentTile.X;
+			}
+
 			return Mathf.Lerp (currentTile.X, nextTile.X, movementPercentage); 
 		} 
 	}
 
 	public float Y { 
 		get { 
+			if (nextTile == null) {
+				return currentTile.Y;
+			}
 			return Mathf.Lerp (currentTile.Y, nextTile.Y, movementPercentage); 
 		} 
 	}
@@ -89,6 +96,7 @@ public class Character : IXmlSerializable
 		job.unregisterJobCompleteCallback (OnJobEnded);
 
 		if (job != myJob) {
+
 			Debug.LogError ("onJobEnded -- different job to end than what's his current job");
 			return;
 		}
