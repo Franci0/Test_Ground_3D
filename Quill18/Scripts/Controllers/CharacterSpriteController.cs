@@ -49,7 +49,7 @@ public class CharacterSpriteController : MonoBehaviour
 		sr.sortingLayerName = "Characters";
 
 
-		character.registerOnChangedCallback (OnCharacterChanged);
+		character.RegisterOnChangedCallback (OnCharacterChanged);
 
 	}
 

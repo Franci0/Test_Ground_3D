@@ -50,16 +50,16 @@ public class JobSpriteController : MonoBehaviour
 			}
 		}
 
-		job.registerJobCompleteCallback (onJobEnded);
-		job.registerJobCancelCallback (onJobEnded);
+		job.RegisterJobCompletedCallback (onJobEnded);
+		job.RegisterJobStoppedCallback (onJobEnded);
 	}
 
 	void onJobEnded (Job job)
 	{
 		GameObject job_go = jobGameObjectMap [job];
 
-		job.unregisterJobCancelCallback (onJobEnded);
-		job.unregisterJobCompleteCallback (onJobEnded);
+		job.UnregisterJobStoppedCallback (onJobEnded);
+		job.UnregisterJobCompletedCallback (onJobEnded);
 
 		Destroy (job_go);
 	}

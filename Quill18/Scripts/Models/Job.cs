@@ -16,18 +16,22 @@ public class Job
 	public Furniture furniturePrototype;
 	public Furniture furniture;
 
-	Action<Job> jobCompleteCallback;
-	Action<Job> jobCancelCallback;
+	protected float jobTimeRequired;
+	protected bool jobRepeats = false;
+
+	Action<Job> jobCompletedCallback;
+	Action<Job> jobStoppedCallback;
 	Action<Job> jobWorkedCallback;
 
 	bool acceptsAnyInventoryItem = false;
 
-	public Job (Tile _tile, Action<Job> _jobCompleteCallback, string _jobObjectType, float _jobTime, Inventory[] _inventoryRequirements)
+	public Job (Tile _tile, Action<Job> _jobCompleteCallback, string _jobObjectType, float _jobTime, Inventory[] _inventoryRequirements, bool _jobRepeats = false)
 	{
 		tile = _tile;
-		jobTime = _jobTime;
-		jobCompleteCallback += _jobCompleteCallback;
+		jobTimeRequired = jobTime = _jobTime;
+		jobCompletedCallback += _jobCompleteCallback;
 		jobObjectType = _jobObjectType;
+		jobRepeats = _jobRepeats;
 
 		inventoryRequirements = new Dictionary<string, Inventory> ();
 
@@ -43,9 +47,10 @@ public class Job
 	protected Job (Job other)
 	{
 		tile = other.tile;
-		jobTime = other.jobTime;
-		jobCompleteCallback = other.jobCompleteCallback;
+		jobTimeRequired = jobTime = other.jobTime;
+		jobCompletedCallback = other.jobCompletedCallback;
 		jobObjectType = other.jobObjectType;
+		jobRepeats = other.jobRepeats;
 
 		inventoryRequirements = new Dictionary<string, Inventory> ();
 
@@ -56,40 +61,39 @@ public class Job
 		}
 	}
 
-	public void registerJobCompleteCallback (Action<Job> callback)
+	public void RegisterJobCompletedCallback (Action<Job> callback)
 	{
-		jobCompleteCallback += callback;
+		jobCompletedCallback += callback;
 	}
 
-	public void unregisterJobCompleteCallback (Action<Job> callback)
+	public void UnregisterJobCompletedCallback (Action<Job> callback)
 	{
-		jobCompleteCallback -= callback;
+		jobCompletedCallback -= callback;
 	}
 
-	public void registerJobCancelCallback (Action<Job> callback)
+	public void RegisterJobStoppedCallback (Action<Job> callback)
 	{
-		jobCancelCallback += callback;
+		jobStoppedCallback += callback;
 	}
 
-	public void unregisterJobCancelCallback (Action<Job> callback)
+	public void UnregisterJobStoppedCallback (Action<Job> callback)
 	{
-		jobCancelCallback -= callback;
+		jobStoppedCallback -= callback;
 	}
 
-	public void registerJobWorkedCallback (Action<Job> callback)
+	public void RegisterJobWorkedCallback (Action<Job> callback)
 	{
 		jobWorkedCallback += callback;
 	}
 
-	public void unregisterJobWorkedCallback (Action<Job> callback)
+	public void UnregisterJobWorkedCallback (Action<Job> callback)
 	{
 		jobWorkedCallback -= callback;
 	}
 
-	public void doWork (float workTime)
+	public void DoWork (float workTime)
 	{
 		if (!HasAllMaterials ()) {
-			//Debug.LogError ("doWork - tried to do a job that doesn't have all the material");
 			if (jobWorkedCallback != null) {
 				jobWorkedCallback (this);
 			}
@@ -103,15 +107,24 @@ public class Job
 			jobWorkedCallback (this);
 		}
 
-		if (jobTime <= 0 && jobCompleteCallback != null) {
-			jobCompleteCallback (this);
+		if (jobTime <= 0) {
+			if (jobCompletedCallback != null) {
+				jobCompletedCallback (this);
+			}
+
+			if (!jobRepeats && jobStoppedCallback != null) {
+				jobStoppedCallback (this);
+
+			} else {
+				jobTime += jobTimeRequired;
+			}
 		}
 	}
 
 	public void CancelJob ()
 	{
-		if (jobCancelCallback != null) {
-			jobCancelCallback (this);
+		if (jobStoppedCallback != null) {
+			jobStoppedCallback (this);
 		}
 
 		World.worldInstance.jobQueue.Remove (this);

@@ -88,7 +88,7 @@ public class BuildModeController : MonoBehaviour
 
 				tile.pendingFurnitureJob = job;
 
-				job.registerJobCancelCallback ((theJob) => {
+				job.RegisterJobStoppedCallback ((theJob) => {
 					theJob.tile.pendingFurnitureJob = null;
 				});
 

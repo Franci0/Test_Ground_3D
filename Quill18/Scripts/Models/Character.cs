@@ -71,7 +71,7 @@ public class Character : IXmlSerializable
 		}
 	}
 
-	public void setDestination (Tile tile)
+	public void SetDestination (Tile tile)
 	{	
 		if (currentTile.isNeighbour (tile) == false) {
 			Debug.Log ("Character::setDestination -- the destination tile isn't a neighbour");
@@ -79,25 +79,24 @@ public class Character : IXmlSerializable
 		destinationTile = tile;
 	}
 
-	public void registerOnChangedCallback (Action<Character> callback)
+	public void RegisterOnChangedCallback (Action<Character> callback)
 	{
 		characterChangedCallback += callback;
 	}
 
-	public void unregisterOnChangedCallback (Action<Character> callback)
+	public void UnregisterOnChangedCallback (Action<Character> callback)
 	{
 		characterChangedCallback -= callback;
 	}
 
 
-	public void OnJobEnded (Job job)
+	public void OnJobStopped (Job job)
 	{
-		job.unregisterJobCancelCallback (OnJobEnded);
-		job.unregisterJobCompleteCallback (OnJobEnded);
+		job.UnregisterJobStoppedCallback (OnJobStopped);
 
 		if (job != myJob) {
 
-			Debug.LogError ("onJobEnded -- different job to end than what's his current job");
+			//Debug.LogError ("onJobEnded -- different job to end than what's his current job");
 			return;
 		}
 
@@ -140,7 +139,7 @@ public class Character : IXmlSerializable
 					if (myJob.DesiresInventoryType (inventory) > 0) {
 						if (currentTile == myJob.tile) {
 							World.worldInstance.inventoryManager.PlaceInventory (myJob, inventory);
-							myJob.doWork (0f);
+							myJob.DoWork (0f);
 
 							if (inventory.stackSize == 0) {
 								inventory = null;
@@ -201,7 +200,7 @@ public class Character : IXmlSerializable
 			destinationTile = myJob.tile;
 
 			if (/*myJob != null &&*/ currentTile == myJob.tile) {
-				myJob.doWork (deltaTime);
+				myJob.DoWork (deltaTime);
 			}
 		}
 	}
@@ -266,8 +265,7 @@ public class Character : IXmlSerializable
 		}
 
 		destinationTile = myJob.tile;
-		myJob.registerJobCompleteCallback (OnJobEnded);
-		myJob.registerJobCancelCallback (OnJobEnded);
+		myJob.RegisterJobStoppedCallback (OnJobStopped);
 		pathAStar = new Path_AStar (World.worldInstance, currentTile, destinationTile);
 
 		if (pathAStar.count () == 0) {

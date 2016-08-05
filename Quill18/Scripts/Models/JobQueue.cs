@@ -16,7 +16,7 @@ public class JobQueue
 	public void Enqueue (Job job)
 	{
 		if (job.jobTime < 0) {
-			job.doWork (0f);
+			job.DoWork (0f);
 			return;	
 		}
 

@@ -4,6 +4,7 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using UnityEditor.VersionControl;
 
 public class Furniture : IXmlSerializable
 {
@@ -27,6 +28,7 @@ public class Furniture : IXmlSerializable
 
 	public Color tint = Color.white;
 	public Vector2 jobSpotOffset = Vector2.zero;
+	public Vector2 jobSpawnSpotOffset = Vector2.zero;
 
 	protected Dictionary<string,float> furnitureParameters;
 	protected Action<Furniture,float> updateActions;
@@ -73,6 +75,7 @@ public class Furniture : IXmlSerializable
 		isAccessible = other.isAccessible;
 		jobs = new List<Job> ();
 		jobSpotOffset = other.jobSpotOffset;
+		jobSpawnSpotOffset = other.jobSpawnSpotOffset;
 	}
 
 	public static Furniture PlaceInstance (Furniture prototype, Tile tile)
@@ -240,23 +243,8 @@ public class Furniture : IXmlSerializable
 	{
 		job.furniture = this;
 		jobs.Add (job);
+		job.RegisterJobStoppedCallback (OnJobStopped);
 		World.worldInstance.jobQueue.Enqueue (job);
-	}
-
-	public void RemoveJob (Job job)
-	{
-		job.furniture = null;
-		jobs.Remove (job);
-		job.CancelJob ();
-		//tile.World.jobQueue.Remove (job);
-	}
-
-	public void ClearJobs ()
-	{
-		foreach (var job in jobs) {
-			RemoveJob (job);
-			//tile.World.jobQueue.Remove (job);
-		}
 	}
 
 	public bool IsStockpile ()
@@ -282,5 +270,40 @@ public class Furniture : IXmlSerializable
 	public Tile GetJobSpotTile ()
 	{
 		return World.worldInstance.getTileAt (tile.X + (int)jobSpotOffset.x, tile.Y + (int)jobSpotOffset.y);
+	}
+
+	public Tile GetSpawnSpotTile ()
+	{
+		return World.worldInstance.getTileAt (tile.X + (int)jobSpawnSpotOffset.x, tile.Y + (int)jobSpawnSpotOffset.y);
+	}
+
+	public void CancelJobs ()
+	{
+		Job[] jobs_array = jobs.ToArray ();
+
+		foreach (var job in jobs_array) {
+			job.CancelJob ();
+		}
+	}
+
+	protected void ClearJobs ()
+	{
+		Job[] jobs_array = jobs.ToArray ();
+
+		foreach (var job in jobs_array) {
+			RemoveJob (job);
+		}
+	}
+
+	protected void RemoveJob (Job job)
+	{
+		job.UnregisterJobStoppedCallback (OnJobStopped);
+		job.furniture = null;
+		jobs.Remove (job);
+	}
+
+	void OnJobStopped (Job job)
+	{
+		RemoveJob (job);
 	}
 }
